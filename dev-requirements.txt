@@ -1,0 +1,5 @@
+pep8
+nose
+rednose
+requests
+pycountry
