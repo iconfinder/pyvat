@@ -1,6 +1,9 @@
 pyvat -- VAT validation for Python
 ==================================
 
+.. image:: https://travis-ci.org/iconfinder/pyvat.png?branch=master
+        :target: https://travis-ci.org/iconfinder/pyvat
+
 With EU VAT handling rules becoming ever more ridiculous and complicated, businesses within the EU are faced with the complexity of having to validate VAT numbers. ``pyvat`` was built for `Iconfinder's marketplace <http://www.iconfinder.com/>`_ to handle just this problem.
 
 Validation of VAT numbers is performed in two steps: firstly, the VAT number is checked against an expression for the given country if one such is available, after which it is checked against a registry if one such is available.
