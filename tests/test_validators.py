@@ -49,6 +49,16 @@ class CheckVatNumberTestCase(TestCase):
     """Test case for :func:`check_vat_number`.
     """
 
+    def test_arbitrary__no_country_code(self):
+        """check_vat_number(<arbitary>, country_code=None)
+        """
+
+        for vat_number, expected_result in [
+            ('123456', False),
+        ]:
+            self.assertEqual(check_vat_number(vat_number).is_valid,
+                             expected_result)
+
     def test_dk__no_country_code(self):
         """check_vat_number(<DK>, country_code=None)
         """

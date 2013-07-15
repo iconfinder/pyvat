@@ -109,7 +109,10 @@ def decompose_vat_number(vat_number,
     # Attempt to determine the country code of the VAT number if possible.
     if not country_code:
         country_code = vat_number[0:2]
-        if not pycountry.countries.get(alpha2=country_code):
+        try:
+            if not pycountry.countries.get(alpha2=country_code):
+                return (None, None)
+        except KeyError:
             return (None, None)
         vat_number = vat_number[2:]
     elif vat_number[0:2] == country_code:
