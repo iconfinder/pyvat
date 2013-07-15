@@ -23,6 +23,16 @@ class IsVatNumberFormatValidTestCase(TestCase):
             self.assertEqual(is_vat_number_format_valid(vat_number),
                              expected_result)
 
+    def test_nl__no_country_code(self):
+        """is_vat_number_format_valid(<NL>, country_code=None)
+        """
+
+        for vat_number, expected_result in [
+            ('NL043133502B02', True),
+        ]:
+            self.assertEqual(is_vat_number_format_valid(vat_number),
+                             expected_result)
+
     def test_dk__country_code(self):
         """is_vat_number_format_valid(<DK>, country_code='DK')
         """
@@ -55,6 +65,7 @@ class CheckVatNumberTestCase(TestCase):
 
         for vat_number, expected_result in [
             ('123456', False),
+            ('NL043133502B02', True),
         ]:
             self.assertEqual(check_vat_number(vat_number).is_valid,
                              expected_result)

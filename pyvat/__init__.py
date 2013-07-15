@@ -32,7 +32,7 @@ VAT_NUMBER_EXPRESSIONS = {
     'LU': re.compile(r'^\d{8}$'),
     'LV': re.compile(r'^\d{11}$'),
     'MT': re.compile(r'^\d{8}$'),
-    'NL': re.compile(r'^\d{9}B\d{3}$', re.IGNORECASE),
+    'NL': re.compile(r'^\d{9}B\d{2,3}$', re.IGNORECASE),
     'PL': re.compile(r'^\d{10}$'),
     'PT': re.compile(r'^\d{9}$'),
     'RO': re.compile(r'^\d{2,10}$'),
@@ -172,12 +172,17 @@ def check_vat_number(vat_number, country_code=None):
     # Decompose the VAT number.
     vat_number, country_code = decompose_vat_number(vat_number, country_code)
     if not vat_number or not country_code:
-        return VatNumberCheckResult(False)
+        return VatNumberCheckResult(False, [
+            '> Unable to decompose VAT number, resulted in %r and %r' %
+            (vat_number, country_code)
+        ])
 
     # Test the VAT number format.
     format_result = is_vat_number_format_valid(vat_number, country_code)
     if format_result is not True:
-        return VatNumberCheckResult(format_result)
+        return VatNumberCheckResult(format_result, [
+            '> VAT number validation failed: %r' % (format_result)
+        ])
 
     # Attempt to check the VAT number against a registry.
     if country_code not in VAT_REGISTRIES:
