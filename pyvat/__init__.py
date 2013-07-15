@@ -1,6 +1,7 @@
 import re
 import pycountry
 from .registries import ViesRegistry
+from .result import VatNumberCheckResult
 
 
 WHITESPACE_EXPRESSION = re.compile('[\s\-]+')
@@ -117,8 +118,7 @@ def decompose_vat_number(vat_number,
     return vat_number, country_code
 
 
-def is_vat_number_format_valid(vat_number,
-                               country_code=None):
+def is_vat_number_format_valid(vat_number, country_code=None):
     """Test if the format of a VAT number is valid.
 
     :param vat_number: VAT number to validate.
@@ -149,9 +149,8 @@ def is_vat_number_format_valid(vat_number,
     return True
 
 
-def is_vat_number_valid(vat_number,
-                        country_code=None):
-    """Test if a VAT number is valid.
+def check_vat_number(vat_number, country_code=None):
+    """Check if a VAT number is valid.
 
     If possible, the VAT number will be checked against available registries.
 
@@ -163,27 +162,26 @@ def is_vat_number_valid(vat_number,
         have a reliable country code prefix. Default ``None`` prompting
         detection.
     :returns:
-        ``True`` if the VAT number can be fully asserted as valid or ``False``
-        if not, otherwise ``None`` indicating that the VAT number may or may
-        not be valid.
+        a :class:`VatNumberCheckResult` instance containing the result for
+        the full VAT number check.
     """
 
     # Decompose the VAT number.
     vat_number, country_code = decompose_vat_number(vat_number, country_code)
     if not vat_number or not country_code:
-        return False
+        return VatNumberCheckResult(False)
 
     # Test the VAT number format.
     format_result = is_vat_number_format_valid(vat_number, country_code)
     if format_result is not True:
-        return format_result
+        return VatNumberCheckResult(format_result)
 
     # Attempt to check the VAT number against a registry.
     if country_code not in VAT_REGISTRIES:
-        return None
+        return VatNumberCheckResult()
 
-    return VAT_REGISTRIES[country_code].is_vat_number_valid(vat_number,
-                                                            country_code)
+    return VAT_REGISTRIES[country_code].check_vat_number(vat_number,
+                                                         country_code)
 
 
 __all__ = ('is_vat_number_format_valid', 'is_vat_number_valid', )

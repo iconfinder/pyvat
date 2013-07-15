@@ -1,4 +1,4 @@
-from pyvat import (is_vat_number_valid, is_vat_number_format_valid)
+from pyvat import (check_vat_number, is_vat_number_format_valid)
 from unittest import TestCase
 
 
@@ -45,12 +45,12 @@ class IsVatNumberFormatValidTestCase(TestCase):
                              expected_result)
 
 
-class IsVatNumberValidTestCase(TestCase):
-    """Test case for :func:`is_vat_number_valid`.
+class CheckVatNumberTestCase(TestCase):
+    """Test case for :func:`check_vat_number`.
     """
 
     def test_dk__no_country_code(self):
-        """is_vat_number_valid(<DK>, country_code=None)
+        """check_vat_number(<DK>, country_code=None)
         """
 
         for vat_number, expected_result in [
@@ -59,10 +59,11 @@ class IsVatNumberValidTestCase(TestCase):
             ('DK9999999', False),
             ('DK999999900', False),
         ]:
-            self.assertEqual(is_vat_number_valid(vat_number), expected_result)
+            self.assertEqual(check_vat_number(vat_number).is_valid,
+                             expected_result)
 
     def test_dk__country_code(self):
-        """is_vat_number_valid(<DK>, country_code='DK')
+        """check_vat_number(<DK>, country_code='DK')
         """
 
         for vat_number, expected_result in [
@@ -71,11 +72,11 @@ class IsVatNumberValidTestCase(TestCase):
             ('9999999', False),
             ('999999900', False),
         ]:
-            self.assertEqual(is_vat_number_valid(vat_number,
-                                                 country_code='DK'),
+            self.assertEqual(check_vat_number(vat_number,
+                                              country_code='DK').is_valid,
                              expected_result)
-            self.assertEqual(is_vat_number_valid('DK%s' % (vat_number),
-                                                 country_code='DK'),
+            self.assertEqual(check_vat_number('DK%s' % (vat_number),
+                                              country_code='DK').is_valid,
                              expected_result)
 
-__all__ = ('IsVatNumberFormatValidTestCase', 'IsVatNumberValidTestCase', )
+__all__ = ('IsVatNumberFormatValidTestCase', 'CheckVatNumberTestCase', )
