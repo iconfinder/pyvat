@@ -51,8 +51,8 @@ class ViesRegistry(Registry):
             return None
 
         # Do not completely fail problematic requests.
-        if response.status_code != 200 or not response \
-                .headers['Content-Type'].startswith('text/xml'):
+        if response.status_code != 200 or \
+                not response.headers['Content-Type'].startswith('text/xml'):
             return None
 
         # This is very rudimentary but also very fast.

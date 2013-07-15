@@ -3,3 +3,4 @@ nose
 rednose
 requests
 pycountry
+pyflakes

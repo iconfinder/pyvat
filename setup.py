@@ -1,11 +1,9 @@
 #!/usr/bin/env python
-import os
-import sys
-
 try:
     from setuptools import setup
 except ImportError:
     from distutils.core import setup
+
 
 packages = [
     'pyvat',
@@ -20,6 +18,7 @@ tests_require = [
     'nose',
     'rednose',
     'pep8',
+    'pyflakes',
 ]
 
 setup(
