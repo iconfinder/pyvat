@@ -23,7 +23,7 @@ tests_require = [
 
 setup(
     name='pyvat',
-    version='1.1.1',
+    version='1.1.2',
     description='VAT validation for Python',
     author='Nick Bruun',
     author_email='nick@bruun.co',

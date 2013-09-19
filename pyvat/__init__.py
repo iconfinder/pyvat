@@ -12,7 +12,7 @@ Used for cleaning VAT numbers.
 
 
 VAT_NUMBER_EXPRESSIONS = {
-    'AT': re.compile(r'^\d{9}$'),
+    'AT': re.compile(r'^U\d{8}$', re.IGNORECASE),
     'BE': re.compile(r'^\d{10}$'),
     'BG': re.compile(r'^\d{9,10}$'),
     'CY': re.compile(r'^\d{8}[a-z]$', re.IGNORECASE),
