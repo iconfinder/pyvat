@@ -1,0 +1,6 @@
+dependencies:
+  post:
+    - pip install -r dev-requirements.txt
+test:
+  override:
+    - make test
