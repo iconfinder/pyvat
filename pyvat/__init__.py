@@ -143,7 +143,7 @@ def is_vat_number_format_valid(vat_number, country_code=None):
         return False
 
     # Test the VAT number against an expression if possible.
-    if not country_code in VAT_NUMBER_EXPRESSIONS:
+    if country_code not in VAT_NUMBER_EXPRESSIONS:
         return None
 
     if not VAT_NUMBER_EXPRESSIONS[country_code].match(vat_number):
