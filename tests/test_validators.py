@@ -64,6 +64,20 @@ class IsVatNumberFormatValidTestCase(TestCase):
                                                         country_code='DK'),
                              expected_result)
 
+    def test_ie__country_code(self):
+        """is_vat_number_format_valid(<IE>, country_code='IE')
+        """
+
+        for vat_number, expected_result in [
+            ('1114174HH', True),
+        ]:
+            self.assertEqual(is_vat_number_format_valid(vat_number,
+                                                        country_code='IE'),
+                             expected_result)
+            self.assertEqual(is_vat_number_format_valid('IE%s' % (vat_number),
+                                                        country_code='IE'),
+                             expected_result)
+
 
 class CheckVatNumberTestCase(TestCase):
     """Test case for :func:`check_vat_number`.
@@ -74,8 +88,9 @@ class CheckVatNumberTestCase(TestCase):
         """
 
         for vat_number, expected_result in [
-            ('123456', False),
-            ('NL043133502B02', True),
+                ('IE1114174HH', True),
+                ('123456', False),
+                ('NL043133502B02', True),
         ]:
             self.assertEqual(check_vat_number(vat_number).is_valid,
                              expected_result)

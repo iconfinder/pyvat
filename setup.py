@@ -10,7 +10,7 @@ packages = [
 ]
 
 requires = [
-    'requests>=1.0.0,<2.0.0',
+    'requests>=1.0.0,<2.3.0',
     'pycountry',
 ]
 
@@ -23,7 +23,7 @@ tests_require = [
 
 setup(
     name='pyvat',
-    version='1.1.2',
+    version='1.1.3',
     description='VAT validation for Python',
     author='Nick Bruun',
     author_email='nick@bruun.co',
