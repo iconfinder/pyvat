@@ -10,7 +10,7 @@ packages = [
 ]
 
 requires = [
-    'requests>=1.0.0,<2.3.0',
+    'requests>=1.0.0,<3.0',
     'pycountry',
 ]
 
