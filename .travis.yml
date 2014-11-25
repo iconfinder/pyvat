@@ -4,5 +4,7 @@ notifications:
 python:
   - "2.6"
   - "2.7"
+  - "3.3"
+  - "3.4"
 install: "pip install -r dev-requirements.txt --use-mirrors"
 script: make test
