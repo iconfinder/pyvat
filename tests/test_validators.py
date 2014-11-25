@@ -6,7 +6,10 @@ from pyvat import (
 from unittest2 import TestCase
 
 
-VAT_NUMBER_CASES = {
+VAT_NUMBER_FORMAT_CASES = {
+    '': [
+        ('123456', False),
+    ],
     'AT': [
         ('U68103312', True),
         ('U12345678', True),
@@ -108,6 +111,58 @@ VAT_NUMBER_CASES = {
         ('12345678', True),
     ],
 }
+"""Cases for testing VAT number format validation.
+
+Mapping of VAT number prefix to a list of tuples of:
+
+::
+
+   (<non-prefixed VAT number>, <valid>)
+"""
+
+VAT_NUMBER_CHECK_CASES = {
+    '': [
+        ('123456', VatNumberCheckResult(False)),
+    ],
+    'BE': [
+        ('0438390312',
+         VatNumberCheckResult(
+             True,
+             business_name=u'NV UNILEVER BELGIUM - UNILEVER BELGIQUE - '
+             u'UNILEVER BELGIE',
+             business_address=u'HUMANITEITSLAAN 292\n1190  VORST'
+         )),
+    ],
+    'DK': [
+        ('33779437', VatNumberCheckResult(
+            True,
+            business_name=u'ICONFINDER ApS',
+            business_address=u'Pilestr\xe6de 43 2\n1112 K\xf8benhavn K'
+        )),
+        ('99999O99', VatNumberCheckResult(False)),
+        ('9999999', VatNumberCheckResult(False)),
+        ('999999900', VatNumberCheckResult(False)),
+    ],
+    'IE': [
+        ('1114174HH',
+         VatNumberCheckResult(
+             True,
+             business_name=u'SPLAY CONSULTING LIMITED',
+             business_address=u'22 ADMIRAL PARK ,BALDOYLE ,DUBLIN 13'
+         )),
+    ],
+    'NL': [
+        ('043133502B02', VatNumberCheckResult(False)),
+    ],
+}
+"""Cases for fully testing VAT validity.
+
+Mapping of VAT number prefix to a list of tuples of:
+
+::
+
+   (<non-prefixed VAT number>, <expected result>)
+"""
 
 
 class IsVatNumberFormatValidTestCase(TestCase):
@@ -118,7 +173,7 @@ class IsVatNumberFormatValidTestCase(TestCase):
         """is_vat_number_format_valid('..', country_code=None)
         """
 
-        for country_code, cases in VAT_NUMBER_CASES.items():
+        for country_code, cases in VAT_NUMBER_FORMAT_CASES.items():
             for vat_number, expected_result in cases:
                 verbal_expected_result = \
                     'valid' if expected_result else 'invalid'
@@ -137,7 +192,7 @@ class IsVatNumberFormatValidTestCase(TestCase):
         """is_vat_number_format_valid('..', country_code='..')
         """
 
-        for country_code, cases in VAT_NUMBER_CASES.items():
+        for country_code, cases in VAT_NUMBER_FORMAT_CASES.items():
             for vat_number, expected_result in cases:
                 verbal_expected_result = \
                     'valid' if expected_result else 'invalid'
@@ -174,65 +229,32 @@ class CheckVatNumberTestCase(TestCase):
         self.assertEqual(expected.business_address,
                          actual.business_address)
 
-    def test_arbitrary__no_country_code(self):
-        """check_vat_number(<arbitary>, country_code=None)
+    def test_no_country_code(self):
+        """check_vat_number('..', country_code=None)
         """
 
-        for vat_number, expected in [
-            ('IE1114174HH',
-             VatNumberCheckResult(
-                 True,
-                 business_name=u'SPLAY CONSULTING LIMITED',
-                 business_address=u'22 ADMIRAL PARK ,BALDOYLE ,DUBLIN 13'
-             )),
-            ('123457', VatNumberCheckResult(False)),
-            ('NL043133502B02', VatNumberCheckResult(False)),
-            ('BE0438390312',
-             VatNumberCheckResult(
-                 True,
-                 business_name=u'NV UNILEVER BELGIUM - UNILEVER BELGIQUE - '
-                 u'UNILEVER BELGIE',
-                 business_address=u'HUMANITEITSLAAN 292\n1190  VORST'
-             )),
-        ]:
-            self.assert_result_equals(expected, check_vat_number(vat_number))
-
-    def test_dk__no_country_code(self):
-        """check_vat_number(<DK>, country_code=None)
-        """
-
-        for vat_number, expected in [
-            ('DK33779437', VatNumberCheckResult(
-                True,
-                business_name=u'ICONFINDER ApS',
-                business_address=u'Pilestr\xe6de 43 2\n1112 K\xf8benhavn K'
-            )),
-            ('DK99999O99', VatNumberCheckResult(False)),
-            ('DK9999999', VatNumberCheckResult(False)),
-            ('DK999999900', VatNumberCheckResult(False)),
-        ]:
-            self.assert_result_equals(expected, check_vat_number(vat_number))
+        for country_code, cases in VAT_NUMBER_CHECK_CASES.items():
+            for vat_number, expected in cases:
+                self.assert_result_equals(
+                    expected,
+                    check_vat_number('%s%s' % (country_code, vat_number))
+                )
 
     def test_dk__country_code(self):
-        """check_vat_number(<DK>, country_code='DK')
+        """check_vat_number('..', country_code='..')
         """
 
-        for vat_number, expected in [
-            ('33779437', VatNumberCheckResult(
-                True,
-                business_name=u'ICONFINDER ApS',
-                business_address=u'Pilestr\xe6de 43 2\n1112 K\xf8benhavn K'
-            )),
-            ('99999O99', VatNumberCheckResult(False)),
-            ('9999999', VatNumberCheckResult(False)),
-            ('999999900', VatNumberCheckResult(False)),
-        ]:
-            self.assert_result_equals(expected,
-                                      check_vat_number(vat_number,
-                                                       country_code='DK'))
-            self.assert_result_equals(expected,
-                                      check_vat_number('DK%s' % (vat_number),
-                                                       country_code='DK'))
+        for country_code, cases in VAT_NUMBER_CHECK_CASES.items():
+            for vat_number, expected in cases:
+                self.assert_result_equals(
+                    expected,
+                    check_vat_number(vat_number, country_code)
+                )
+                self.assert_result_equals(
+                    expected,
+                    check_vat_number('%s%s' % (country_code, vat_number),
+                                     country_code)
+                )
 
 
 __all__ = ('IsVatNumberFormatValidTestCase', 'CheckVatNumberTestCase', )
