@@ -4,7 +4,7 @@ from .registries import ViesRegistry
 from .result import VatNumberCheckResult
 
 
-__version__ = '1.2.0-dev'
+__version__ = '1.2.0'
 
 
 WHITESPACE_EXPRESSION = re.compile('[\s\-]+')
