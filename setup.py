@@ -18,6 +18,7 @@ tests_require = [
     'nose',
     'rednose',
     'flake8',
+    'unittest2',
 ]
 
 setup(

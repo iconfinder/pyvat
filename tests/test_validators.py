@@ -3,7 +3,7 @@ from pyvat import (
     is_vat_number_format_valid,
     VatNumberCheckResult,
 )
-from unittest import TestCase
+from unittest2 import TestCase
 
 
 class IsVatNumberFormatValidTestCase(TestCase):

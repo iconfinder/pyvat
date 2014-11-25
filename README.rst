@@ -120,3 +120,5 @@ Usage
 
    :Returns:
       ``True`` if the VAT number can be fully asserted as valid or ``False`` if not, otherwise ``None`` indicating that the VAT number may or may not be valid.
+
+For more detailed documentation, see the `full pyvat documentation <http://pyvat.readthedocs.org/>`_.

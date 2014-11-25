@@ -5,3 +5,4 @@ requests
 pycountry
 sphinx
 sphinx_rtd_theme
+unittest2
