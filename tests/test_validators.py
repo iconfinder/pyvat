@@ -10,11 +10,41 @@ class IsVatNumberFormatValidTestCase(TestCase):
     """Test case for :func:`is_vat_number_format_valid`.
     """
 
+    def _test_country_code(self, country_code, cases):
+        """Test with country code explicitly provided.
+
+        :param country_code: Country code.
+        :param cases:
+            Iterable of tuples of ``(<VAT number>, <expected result>)`` to be
+            tested.
+        """
+
+        for vat_number, expected_result in cases:
+            self.assertEqual(is_vat_number_format_valid(vat_number,
+                                                        country_code),
+                             expected_result)
+            self.assertEqual(is_vat_number_format_valid('%s%s' % (country_code,
+                                                                  vat_number),
+                                                        country_code),
+                             expected_result)
+
+    def _test_no_country_code(self, cases):
+        """Test with no country code explicitly provided.
+
+        :param cases:
+            Iterable of tuples of ``(<VAT number>, <expected result>)`` to be
+            tested.
+        """
+
+        for vat_number, expected_result in cases:
+            self.assertEqual(is_vat_number_format_valid(vat_number),
+                             expected_result)
+
     def test_dk__no_country_code(self):
         """is_vat_number_format_valid(<DK>, country_code=None)
         """
 
-        for vat_number, expected_result in [
+        self._test_no_country_code([
             ('DK 12 34 56 78', True),
             ('DK12345678', True),
             ('dk12345678', True),
@@ -23,35 +53,29 @@ class IsVatNumberFormatValidTestCase(TestCase):
             ('DK99999O99', False),
             ('DK9999999', False),
             ('DK999999900', False),
-        ]:
-            self.assertEqual(is_vat_number_format_valid(vat_number),
-                             expected_result)
+        ])
 
     def test_nl__no_country_code(self):
         """is_vat_number_format_valid(<NL>, country_code=None)
         """
 
-        for vat_number, expected_result in [
+        self._test_no_country_code([
             ('NL043133502B02', True),
-        ]:
-            self.assertEqual(is_vat_number_format_valid(vat_number),
-                             expected_result)
+        ])
 
     def test_at__no_country_code(self):
         """is_vat_number_format_valid(<AT>, country_code=None)
         """
 
-        for vat_number, expected_result in [
+        self._test_no_country_code([
             ('ATU68103312', True),
-        ]:
-            self.assertEqual(is_vat_number_format_valid(vat_number),
-                             expected_result)
+        ])
 
     def test_dk__country_code(self):
         """is_vat_number_format_valid(<DK>, country_code='DK')
         """
 
-        for vat_number, expected_result in [
+        self._test_country_code('DK', [
             ('12 34 56 78', True),
             ('12345678', True),
             ('12345678', True),
@@ -60,27 +84,23 @@ class IsVatNumberFormatValidTestCase(TestCase):
             ('99999O99', False),
             ('9999999', False),
             ('999999900', False),
-        ]:
-            self.assertEqual(is_vat_number_format_valid(vat_number,
-                                                        country_code='DK'),
-                             expected_result)
-            self.assertEqual(is_vat_number_format_valid('DK%s' % (vat_number),
-                                                        country_code='DK'),
-                             expected_result)
+        ])
 
     def test_ie__country_code(self):
         """is_vat_number_format_valid(<IE>, country_code='IE')
         """
 
-        for vat_number, expected_result in [
+        self._test_country_code('IE', [
             ('1114174HH', True),
-        ]:
-            self.assertEqual(is_vat_number_format_valid(vat_number,
-                                                        country_code='IE'),
-                             expected_result)
-            self.assertEqual(is_vat_number_format_valid('IE%s' % (vat_number),
-                                                        country_code='IE'),
-                             expected_result)
+        ])
+
+    def test_gb__country_code(self):
+        """is_vat_number_format_valid(<GB>, country_code='GB')
+        """
+
+        self._test_country_code('GB', [
+            ('999999999999999999999999999999999999', False),
+        ])
 
 
 class CheckVatNumberTestCase(TestCase):
