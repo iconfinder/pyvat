@@ -8,8 +8,16 @@ class VatNumberCheckResult(object):
         nondeterministic due to adverse conditions.
     :ivar log_lines:
         Check log lines.
+    :ivar business_name: Optional business name retrieved for the VAT number.
+    :ivar business_address: Optional address retrieved for the VAT number.
     """
 
-    def __init__(self, is_valid=None, log_lines=None):
+    def __init__(self,
+                 is_valid=None,
+                 log_lines=None,
+                 business_name=None,
+                 business_address=None):
         self.is_valid = is_valid
         self.log_lines = log_lines or []
+        self.business_name = business_name
+        self.business_address = business_address

@@ -1,4 +1,8 @@
-from pyvat import (check_vat_number, is_vat_number_format_valid)
+from pyvat import (
+    check_vat_number,
+    is_vat_number_format_valid,
+    VatNumberCheckResult,
+)
 from unittest import TestCase
 
 
@@ -83,46 +87,72 @@ class CheckVatNumberTestCase(TestCase):
     """Test case for :func:`check_vat_number`.
     """
 
+    def assert_result_equals(self, expected, actual):
+        self.assertIsInstance(actual, VatNumberCheckResult)
+        self.assertEqual(expected.is_valid, actual.is_valid)
+        self.assertEqual(expected.business_name, actual.business_name)
+        self.assertEqual(expected.business_address,
+                         actual.business_address)
+
     def test_arbitrary__no_country_code(self):
         """check_vat_number(<arbitary>, country_code=None)
         """
 
-        for vat_number, expected_result in [
-                ('IE1114174HH', True),
-                ('123456', False),
-                ('NL043133502B02', True),
+        for vat_number, expected in [
+            ('IE1114174HH',
+             VatNumberCheckResult(
+                 True,
+                 business_name=u'SPLAY CONSULTING LIMITED',
+                 business_address=u'22 ADMIRAL PARK ,BALDOYLE ,DUBLIN 13'
+             )),
+            ('123457', VatNumberCheckResult(False)),
+            ('NL043133502B02', VatNumberCheckResult(False)),
+            ('BE0438390312',
+             VatNumberCheckResult(
+                 True,
+                 business_name=u'NV UNILEVER BELGIUM - UNILEVER BELGIQUE - '
+                 u'UNILEVER BELGIE',
+                 business_address=u'HUMANITEITSLAAN 292\n1190  VORST'
+             )),
         ]:
-            self.assertEqual(check_vat_number(vat_number).is_valid,
-                             expected_result)
+            self.assert_result_equals(expected, check_vat_number(vat_number))
 
     def test_dk__no_country_code(self):
         """check_vat_number(<DK>, country_code=None)
         """
 
-        for vat_number, expected_result in [
-            ('DK33779437', True),
-            ('DK99999O99', False),
-            ('DK9999999', False),
-            ('DK999999900', False),
+        for vat_number, expected in [
+            ('DK33779437', VatNumberCheckResult(
+                True,
+                business_name=u'ICONFINDER ApS',
+                business_address=u'Pilestr\xe6de 43 2\n1112 K\xf8benhavn K'
+            )),
+            ('DK99999O99', VatNumberCheckResult(False)),
+            ('DK9999999', VatNumberCheckResult(False)),
+            ('DK999999900', VatNumberCheckResult(False)),
         ]:
-            self.assertEqual(check_vat_number(vat_number).is_valid,
-                             expected_result)
+            self.assert_result_equals(expected, check_vat_number(vat_number))
 
     def test_dk__country_code(self):
         """check_vat_number(<DK>, country_code='DK')
         """
 
-        for vat_number, expected_result in [
-            ('33779437', True),
-            ('99999O99', False),
-            ('9999999', False),
-            ('999999900', False),
+        for vat_number, expected in [
+            ('33779437', VatNumberCheckResult(
+                True,
+                business_name=u'ICONFINDER ApS',
+                business_address=u'Pilestr\xe6de 43 2\n1112 K\xf8benhavn K'
+            )),
+            ('99999O99', VatNumberCheckResult(False)),
+            ('9999999', VatNumberCheckResult(False)),
+            ('999999900', VatNumberCheckResult(False)),
         ]:
-            self.assertEqual(check_vat_number(vat_number,
-                                              country_code='DK').is_valid,
-                             expected_result)
-            self.assertEqual(check_vat_number('DK%s' % (vat_number),
-                                              country_code='DK').is_valid,
-                             expected_result)
+            self.assert_result_equals(expected,
+                                      check_vat_number(vat_number,
+                                                       country_code='DK'))
+            self.assert_result_equals(expected,
+                                      check_vat_number('DK%s' % (vat_number),
+                                                       country_code='DK'))
+
 
 __all__ = ('IsVatNumberFormatValidTestCase', 'CheckVatNumberTestCase', )

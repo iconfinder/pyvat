@@ -1,5 +1,7 @@
 import requests
+import xml.dom.minidom
 from .result import VatNumberCheckResult
+from .xml_utils import get_first_child_element, get_text
 
 
 class Registry(object):
@@ -74,14 +76,74 @@ class ViesRegistry(Registry):
 
         # Do not completely fail problematic requests.
         if response.status_code != 200 or \
-                not response.headers['Content-Type'].startswith('text/xml'):
+           not response.headers['Content-Type'].startswith('text/xml'):
             result.log_lines.append(u'< Response is nondeterministic due to '
-                                    'invalid response status code or MIME '
-                                    'type')
+                                    u'invalid response status code or MIME '
+                                    u'type')
             return result
 
-        # This is very rudimentary but also very fast.
-        result.is_valid = '<valid>true</valid>' in response.text
+        # Parse the DOM and validate as much as we can.
+        #
+        # We basically expect the result structure to be as follows,
+        # where the address and name nodes might be omitted.
+        #
+        # <soap:Envelope>
+        #   <soap:Body>
+        #     <checkVatResponse>
+        #       <countryCode>..</countryCode>
+        #       <vatNumber>..</vatNumber>
+        #       <requestDate>..</requestDate>
+        #       <valid>..</valid>
+        #       <name>..</name>
+        #       <address>..</address>
+        #     </checkVatResponse>
+        #   </soap:Body>
+        # </soap:Envelope>
+        try:
+            result_dom = xml.dom.minidom.parseString(
+                response.text.encode('utf-8')
+            )
+
+            envelope_node = result_dom.documentElement
+            if envelope_node.tagName != 'soap:Envelope':
+                raise ValueError('expected response XML root element to be a '
+                                 'SOAP envelope')
+
+            body_node = get_first_child_element(envelope_node, 'soap:Body')
+            check_vat_response_node = \
+                get_first_child_element(body_node, 'checkVatResponse')
+            valid_node = get_first_child_element(check_vat_response_node,
+                                                 'valid')
+        except Exception as e:
+            result.log_lines.append(u'< Response is nondeterministic due to '
+                                    u'invalid response body: %r' % (e))
+            return result
+
+        # Parse the validity of the business.
+        valid_text = get_text(valid_node)
+
+        if valid_text in frozenset(('true', 'false')):
+            result.is_valid = valid_text == 'true'
+        else:
+            result.log_lines.append(u'< Response is nondeterministic due to '
+                                    u'invalid validity field: %r' %
+                                    (valid_text))
+
+        # Parse the business name and address if possible.
+        try:
+            name_node = get_first_child_element(check_vat_response_node,
+                                                'name')
+            result.business_name = get_text(name_node).strip() or None
+        except:
+            pass
+
+        try:
+            address_node = get_first_child_element(check_vat_response_node,
+                                                   'address')
+            result.business_address = get_text(address_node).strip() or None
+        except:
+            pass
+
         return result
 
 

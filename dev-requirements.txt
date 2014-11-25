@@ -1,6 +1,5 @@
-pep8
+flake8
 nose
 rednose
 requests
 pycountry
-pyflakes

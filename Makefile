@@ -1,12 +1,13 @@
+PY_SRC := pyvat tests setup.py
+
 all:
 
 test:
 	@nosetests
-	@pep8 pyvat tests setup.py
-	@pyflakes pyvat tests setup.py
+	@flake8 $(PY_SRC)
 
-pep8:
-	@pep8 pyvat tests setup.py
+check:
+	@flake8 $(PY_SRC)
 
 publish:
 	@python setup.py sdist upload
