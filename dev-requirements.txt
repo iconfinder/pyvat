@@ -3,3 +3,5 @@ nose
 rednose
 requests
 pycountry
+sphinx
+sphinx_rtd_theme

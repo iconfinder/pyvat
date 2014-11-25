@@ -4,6 +4,9 @@ from .registries import ViesRegistry
 from .result import VatNumberCheckResult
 
 
+__version__ = '1.2.0-dev'
+
+
 WHITESPACE_EXPRESSION = re.compile('[\s\-]+')
 """Whitespace expression.
 
@@ -193,4 +196,4 @@ def check_vat_number(vat_number, country_code=None):
                                                          country_code)
 
 
-__all__ = ('is_vat_number_format_valid', 'is_vat_number_valid', )
+__all__ = ('is_vat_number_format_valid', 'check_vat_number', )
