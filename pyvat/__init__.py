@@ -16,7 +16,7 @@ Used for cleaning VAT numbers.
 
 VAT_NUMBER_EXPRESSIONS = {
     'AT': re.compile(r'^U\d{8}$', re.IGNORECASE),
-    'BE': re.compile(r'^\d{10}$'),
+    'BE': re.compile(r'^\d{9,10}$'),
     'BG': re.compile(r'^\d{9,10}$'),
     'CY': re.compile(r'^\d{8}[a-z]$', re.IGNORECASE),
     'CZ': re.compile(r'^\d{8,10}$'),
@@ -26,7 +26,7 @@ VAT_NUMBER_EXPRESSIONS = {
     'EL': re.compile(r'^\d{9}$'),
     'ES': re.compile(r'^[\da-z]\d{7}[\da-z]$', re.IGNORECASE),
     'FI': re.compile(r'^\d{8}$'),
-    'FR': re.compile(r'^[\da-z]{2}\d{9}$', re.IGNORECASE),
+    'FR': re.compile(r'^[\da-hj-np-z]{2}\d{9}$', re.IGNORECASE),
     'GB': re.compile(r'^((\d{9})|(\d{12})|(GD\d{3})|(HA\d{3}))$',
                      re.IGNORECASE),
     'HU': re.compile(r'^\d{8}$'),
@@ -42,6 +42,7 @@ VAT_NUMBER_EXPRESSIONS = {
     'PT': re.compile(r'^\d{9}$'),
     'RO': re.compile(r'^\d{2,10}$'),
     'SE': re.compile(r'^\d{12}$'),
+    'SI': re.compile(r'^\d{8}$'),
     'SK': re.compile(r'^\d{10}$'),
 }
 """VAT number expressions.
@@ -114,11 +115,13 @@ def decompose_vat_number(vat_number,
     # Attempt to determine the country code of the VAT number if possible.
     if not country_code:
         country_code = vat_number[0:2]
-        try:
-            if not pycountry.countries.get(alpha2=country_code):
+
+        if country_code not in VAT_REGISTRIES:
+            try:
+                if not pycountry.countries.get(alpha2=country_code):
+                    return (None, None)
+            except KeyError:
                 return (None, None)
-        except KeyError:
-            return (None, None)
         vat_number = vat_number[2:]
     elif vat_number[0:2] == country_code:
         vat_number = vat_number[2:]

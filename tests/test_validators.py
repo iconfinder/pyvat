@@ -6,101 +6,161 @@ from pyvat import (
 from unittest2 import TestCase
 
 
+VAT_NUMBER_CASES = {
+    'AT': [
+        ('U68103312', True),
+        ('U12345678', True),
+    ],
+    'BE': [
+        ('123456789', True),
+    ],
+    'CY': [
+        ('12345678X', True),
+    ],
+    'CZ': [
+        ('12345678', True),
+        ('123456789', True),
+        ('1234567890', True),
+    ],
+    'DE': [
+        ('123456789', True),
+    ],
+    'DK': [
+        (' 12 34 56 78', True),
+        ('12345678', True),
+        ('00000000', True),
+        ('99999999', True),
+        ('99999O99', False),
+        ('9999999', False),
+        ('999999900', False),
+    ],
+    'EE': [
+        ('123456789', True),
+    ],
+    'EL': [
+        ('012345678', True),
+    ],
+    'ES': [
+        ('X12345678', True),
+        ('12345678X', True),
+        ('X1234567X', True),
+    ],
+    'FI': [
+        ('12345678', True),
+    ],
+    'FR': [
+        ('12345678901', True),
+        ('X2345678901', True),
+        ('1X345678901', True),
+        ('XX345678901', True),
+        ('O2345678901', False),
+        ('1O345678901', False),
+        ('OO345678901', False),
+        ('I2345678901', False),
+        ('1I345678901', False),
+        ('II345678901', False),
+    ],
+    'GB': [
+        ('123456789', True),
+        ('123456789001', True),
+        ('999999999999999999999999999999999999', False),
+    ],
+    'HU': [
+        ('12345678', True),
+    ],
+    'IE': [
+        ('1114174HH', True),
+        ('1X34567X', True),
+        ('1234567X', True),
+    ],
+    'IT': [
+        ('12345678901', True),
+    ],
+    'LV': [
+        ('12345678901', True),
+    ],
+    'LT': [
+        ('123456789', True),
+        ('123456789012', True),
+    ],
+    'LU': [
+        ('12345678', True),
+    ],
+    'MT': [
+        ('12345678', True),
+    ],
+    'NL': [
+        ('043133502B02', True),
+    ],
+    'PL': [
+        ('1234567890', True),
+    ],
+    'PT': [
+        ('123456789', True),
+    ],
+    'SE': [
+        ('123456789001', True),
+    ],
+    'SK': [
+        ('1234567890', True),
+    ],
+    'SI': [
+        ('12345678', True),
+    ],
+}
+
+
 class IsVatNumberFormatValidTestCase(TestCase):
     """Test case for :func:`is_vat_number_format_valid`.
     """
 
-    def _test_country_code(self, country_code, cases):
-        """Test with country code explicitly provided.
-
-        :param country_code: Country code.
-        :param cases:
-            Iterable of tuples of ``(<VAT number>, <expected result>)`` to be
-            tested.
+    def test_no_country_code(self):
+        """is_vat_number_format_valid('..', country_code=None)
         """
 
-        for vat_number, expected_result in cases:
-            self.assertEqual(is_vat_number_format_valid(vat_number,
-                                                        country_code),
-                             expected_result)
-            self.assertEqual(is_vat_number_format_valid('%s%s' % (country_code,
-                                                                  vat_number),
-                                                        country_code),
-                             expected_result)
+        for country_code, cases in VAT_NUMBER_CASES.items():
+            for vat_number, expected_result in cases:
+                verbal_expected_result = \
+                    'valid' if expected_result else 'invalid'
 
-    def _test_no_country_code(self, cases):
-        """Test with no country code explicitly provided.
+                self.assertEqual(
+                    is_vat_number_format_valid('%s%s' % (country_code,
+                                                         vat_number)),
+                    expected_result,
+                    'expected prefixed VAT number %s%s to be %s' %
+                    (country_code,
+                     vat_number,
+                     verbal_expected_result)
+                )
 
-        :param cases:
-            Iterable of tuples of ``(<VAT number>, <expected result>)`` to be
-            tested.
+    def test_country_code(self):
+        """is_vat_number_format_valid('..', country_code='..')
         """
 
-        for vat_number, expected_result in cases:
-            self.assertEqual(is_vat_number_format_valid(vat_number),
-                             expected_result)
+        for country_code, cases in VAT_NUMBER_CASES.items():
+            for vat_number, expected_result in cases:
+                verbal_expected_result = \
+                    'valid' if expected_result else 'invalid'
 
-    def test_dk__no_country_code(self):
-        """is_vat_number_format_valid(<DK>, country_code=None)
-        """
-
-        self._test_no_country_code([
-            ('DK 12 34 56 78', True),
-            ('DK12345678', True),
-            ('dk12345678', True),
-            ('DK00000000', True),
-            ('DK99999999', True),
-            ('DK99999O99', False),
-            ('DK9999999', False),
-            ('DK999999900', False),
-        ])
-
-    def test_nl__no_country_code(self):
-        """is_vat_number_format_valid(<NL>, country_code=None)
-        """
-
-        self._test_no_country_code([
-            ('NL043133502B02', True),
-        ])
-
-    def test_at__no_country_code(self):
-        """is_vat_number_format_valid(<AT>, country_code=None)
-        """
-
-        self._test_no_country_code([
-            ('ATU68103312', True),
-        ])
-
-    def test_dk__country_code(self):
-        """is_vat_number_format_valid(<DK>, country_code='DK')
-        """
-
-        self._test_country_code('DK', [
-            ('12 34 56 78', True),
-            ('12345678', True),
-            ('12345678', True),
-            ('00000000', True),
-            ('99999999', True),
-            ('99999O99', False),
-            ('9999999', False),
-            ('999999900', False),
-        ])
-
-    def test_ie__country_code(self):
-        """is_vat_number_format_valid(<IE>, country_code='IE')
-        """
-
-        self._test_country_code('IE', [
-            ('1114174HH', True),
-        ])
-
-    def test_gb__country_code(self):
-        """is_vat_number_format_valid(<GB>, country_code='GB')
-        """
-
-        self._test_country_code('GB', [
-            ('999999999999999999999999999999999999', False),
-        ])
+                self.assertEqual(is_vat_number_format_valid(vat_number,
+                                                            country_code),
+                                 expected_result,
+                                 'expected non-prefixed VAT number %s (%s) '
+                                 'to be %s' % (vat_number,
+                                               country_code,
+                                               verbal_expected_result))
+                self.assertEqual(
+                    is_vat_number_format_valid(
+                        '%s%s' % (country_code, vat_number),
+                        country_code
+                    ),
+                    expected_result,
+                    'expected prefixed VAT number %s%s (%s) to be %s' %
+                    (country_code,
+                     vat_number,
+                     country_code,
+                     verbal_expected_result)
+                )
 
 
 class CheckVatNumberTestCase(TestCase):
