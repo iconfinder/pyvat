@@ -5,9 +5,6 @@ except ImportError:
     from distutils.core import setup
 
 
-from pyvat import __version__ as version
-
-
 packages = [
     'pyvat',
 ]
@@ -25,7 +22,7 @@ tests_require = [
 
 setup(
     name='pyvat',
-    version=version,
+    version='1.2.0-dev',
     description='VAT validation for Python',
     author='Nick Bruun',
     author_email='nick@bruun.co',
