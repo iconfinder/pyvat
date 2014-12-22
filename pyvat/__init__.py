@@ -8,7 +8,7 @@ from .vat_charge import VatCharge, VatChargeAction
 from .vat_rules import VAT_RULES
 
 
-__version__ = '1.2.0'
+__version__ = '1.3.0'
 
 
 WHITESPACE_EXPRESSION = re.compile('[\s\-]+')
@@ -210,6 +210,9 @@ def get_sale_vat_charge(date,
                         buyer,
                         seller):
     """Get the VAT charge for performing the sale of an item.
+
+    Currently only supports determination of the VAT charge for 
+    telecommunications, broadcasting and electronic services in the EU.
 
     :param date: Sale date.
     :type date: datetime.date
