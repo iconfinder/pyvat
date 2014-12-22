@@ -28,6 +28,7 @@ FI                 Finland               `VIES FAQ Q11`_
 FR                 France                `VIES FAQ Q11`_
 GB                 United Kingdom        `VIES FAQ Q11`_
 HU                 Hungary               `VIES FAQ Q11`_
+HR                 Croatia               `VIES FAQ Q11`_
 IE                 Ireland               `VIES FAQ Q11`_
 IT                 Italy                 `VIES FAQ Q11`_
 LT                 Lithuania             `VIES FAQ Q11`_
@@ -39,6 +40,7 @@ PL                 Poland                `VIES FAQ Q11`_
 PT                 Portugal              `VIES FAQ Q11`_
 RO                 Romania               `VIES FAQ Q11`_
 SE                 Sweden                `VIES FAQ Q11`_
+SI                 Slovenia              `VIES FAQ Q11`_
 SK                 Slovakia              `VIES FAQ Q11`_
 ================== ===================== ======================================
 
@@ -63,6 +65,7 @@ FI                 Finland               `VIES web service`_
 FR                 France                `VIES web service`_
 GB                 United Kingdom        `VIES web service`_
 HU                 Hungary               `VIES web service`_
+HR                 Croatia               `VIES web service`_
 IE                 Ireland               `VIES web service`_
 IT                 Italy                 `VIES web service`_
 LT                 Lithuania             `VIES web service`_
@@ -74,5 +77,43 @@ PL                 Poland                `VIES web service`_
 PT                 Portugal              `VIES web service`_
 RO                 Romania               `VIES web service`_
 SE                 Sweden                `VIES web service`_
+SI                 Slovenia              `VIES web service`_
 SK                 Slovakia              `VIES web service`_
+================== ===================== ======================================
+
+A subset of sales VAT rules are implemented for the following countries:
+
+.. _EU electronic services: http://ec.europa.eu/taxation_customs/taxation/vat/how_vat_works/telecom/index_en.htm
+
+================== ===================== ======================================
+ISO 3166-1-alpha-2 Country               Reference
+================== ===================== ======================================
+AT                 Austria               `EU electronic services`_
+BE                 Belgium               `EU electronic services`_
+BG                 Bulgaria              `EU electronic services`_
+CY                 Cyprus                `EU electronic services`_
+CZ                 Czech Republic        `EU electronic services`_
+DE                 Germany               `EU electronic services`_
+DK                 Denmark               `EU electronic services`_
+EE                 Estonia               `EU electronic services`_
+EL                 Greece                `EU electronic services`_
+ES                 Spain                 `EU electronic services`_
+FI                 Finland               `EU electronic services`_
+FR                 France                `EU electronic services`_
+GB                 United Kingdom        `EU electronic services`_
+HU                 Hungary               `EU electronic services`_
+HR                 Croatia               `EU electronic services`_
+IE                 Ireland               `EU electronic services`_
+IT                 Italy                 `EU electronic services`_
+LT                 Lithuania             `EU electronic services`_
+LU                 Luxembourg            `EU electronic services`_
+LV                 Latvia                `EU electronic services`_
+MT                 Malta                 `EU electronic services`_
+NL                 The Netherlands       `EU electronic services`_
+PL                 Poland                `EU electronic services`_
+PT                 Portugal              `EU electronic services`_
+RO                 Romania               `EU electronic services`_
+SE                 Sweden                `EU electronic services`_
+SI                 Slovenia              `EU electronic services`_
+SK                 Slovakia              `EU electronic services`_
 ================== ===================== ======================================

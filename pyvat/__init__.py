@@ -1,10 +1,14 @@
 import re
 import pycountry
+from .item_type import ItemType
+from .party import Party
 from .registries import ViesRegistry
 from .result import VatNumberCheckResult
+from .vat_charge import VatCharge, VatChargeAction
+from .vat_rules import VAT_RULES
 
 
-__version__ = '1.2.0'
+__version__ = '1.3.0'
 
 
 WHITESPACE_EXPRESSION = re.compile('[\s\-]+')
@@ -76,6 +80,7 @@ VAT_REGISTRIES = {
     'FR': VIES_REGISTRY,
     'GB': VIES_REGISTRY,
     'HU': VIES_REGISTRY,
+    'HR': VIES_REGISTRY,
     'IE': VIES_REGISTRY,
     'IT': VIES_REGISTRY,
     'LT': VIES_REGISTRY,
@@ -88,6 +93,7 @@ VAT_REGISTRIES = {
     'RO': VIES_REGISTRY,
     'SE': VIES_REGISTRY,
     'SK': VIES_REGISTRY,
+    'SI': VIES_REGISTRY,
 }
 """VAT registries.
 
@@ -96,8 +102,7 @@ validating the VAT number.
 """
 
 
-def decompose_vat_number(vat_number,
-                         country_code=None):
+def decompose_vat_number(vat_number, country_code=None):
     """Decompose a VAT number and an optional country code.
 
     :param vat_number: VAT number.
@@ -200,4 +205,76 @@ def check_vat_number(vat_number, country_code=None):
                                                          country_code)
 
 
-__all__ = ('is_vat_number_format_valid', 'check_vat_number', )
+def get_sale_vat_charge(date,
+                        item_type,
+                        buyer,
+                        seller):
+    """Get the VAT charge for performing the sale of an item.
+
+    Currently only supports determination of the VAT charge for 
+    telecommunications, broadcasting and electronic services in the EU.
+
+    :param date: Sale date.
+    :type date: datetime.date
+    :param item_type: Type of the item being sold.
+    :type item_type: ItemType
+    :param buyer: Buyer.
+    :type buyer: Party
+    :param seller: Seller.
+    :type seller: Party
+    :rtype: VatCharge
+    """
+
+    # Only telecommunications, broadcasting and electronic services are
+    # currently supported.
+    if not item_type.is_electronic_service and \
+       not item_type.is_telecommunications_service and \
+       not item_type.is_broadcasting_service:
+        raise NotImplementedError(
+            'VAT charge determination for items that are not '
+            'telecommunications, broadcasting or electronic services is '
+            'currently not supported'
+        )
+
+    # Determine the rules for the countries in which the buyer and seller
+    # reside.
+    buyer_vat_rules = VAT_RULES.get(buyer.country_code, None)
+    seller_vat_rules = VAT_RULES.get(seller.country_code, None)
+
+    # Test if the country to which the item is being sold enforces specific
+    # VAT rules for selling to the given country.
+    if buyer_vat_rules:
+        try:
+            return buyer_vat_rules.get_sale_to_country_vat_charge(date,
+                                                                  item_type,
+                                                                  buyer,
+                                                                  seller)
+        except NotImplementedError:
+            pass
+
+    # Fall back to applying VAT rules for selling from the seller's country.
+    if seller_vat_rules:
+        try:
+            return seller_vat_rules.get_sale_from_country_vat_charge(date,
+                                                                     item_type,
+                                                                     buyer,
+                                                                     seller)
+        except NotImplementedError:
+            pass
+
+    # Nothing we can do from here.
+    raise NotImplementedError(
+        'cannot determine VAT charge for a sale of item %r between %r and %r' %
+        (item_type, seller, buyer)
+    )
+
+
+__all__ = (
+    'check_vat_number',
+    'get_sale_vat_charge',
+    'is_vat_number_format_valid',
+    ItemType.__name__,
+    Party.__name__,
+    VatCharge.__name__,
+    VatChargeAction.__name__,
+)
