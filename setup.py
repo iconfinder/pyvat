@@ -12,6 +12,7 @@ packages = [
 requires = [
     'requests>=1.0.0,<3.0',
     'pycountry',
+    'enum34',
 ]
 
 tests_require = [
