@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+import sys
+
 try:
     from setuptools import setup
 except ImportError:
@@ -13,6 +15,10 @@ requires = [
     'requests>=1.0.0,<3.0',
     'pycountry',
 ]
+
+# Install enum compatibility module for Python lower than v3.4
+if sys.version_info < (3, 4, ):
+    requires.append('enum34')
 
 tests_require = [
     'nose',
