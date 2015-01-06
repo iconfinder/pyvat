@@ -211,7 +211,7 @@ def get_sale_vat_charge(date,
                         seller):
     """Get the VAT charge for performing the sale of an item.
 
-    Currently only supports determination of the VAT charge for 
+    Currently only supports determination of the VAT charge for
     telecommunications, broadcasting and electronic services in the EU.
 
     :param date: Sale date.
