@@ -33,6 +33,7 @@ VAT_NUMBER_EXPRESSIONS = {
     'FR': re.compile(r'^[\da-hj-np-z]{2}\d{9}$', re.IGNORECASE),
     'GB': re.compile(r'^((\d{9})|(\d{12})|(GD\d{3})|(HA\d{3}))$',
                      re.IGNORECASE),
+    'HR': re.compile(r'^\d{11}$'),
     'HU': re.compile(r'^\d{8}$'),
     'IE': re.compile(r'^((\d{7}[a-z])|(\d[a-z]\d{5}[a-z])|(\d{6,7}[a-z]{2}))$',
                      re.IGNORECASE),
