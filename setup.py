@@ -3,6 +3,7 @@ try:
     from setuptools import setup
 except ImportError:
     from distutils.core import setup
+import sys
 
 
 packages = [
@@ -12,8 +13,11 @@ packages = [
 requires = [
     'requests>=1.0.0,<3.0',
     'pycountry',
-    'enum34',
 ]
+# Incompatible with Py 3.5+: https://bitbucket.org/stoneleaf/enum34/issues/5
+if (sys.version_info[0] < 3 or
+        sys.version_info[0] == 3 and sys.version_info[1] < 5):
+    requires.append('enum34')
 
 tests_require = [
     'nose',
@@ -47,5 +51,6 @@ setup(
         'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3.3',
         'Programming Language :: Python :: 3.4',
+        'Programming Language :: Python :: 3.5',
     ),
 )

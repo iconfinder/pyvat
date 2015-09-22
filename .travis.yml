@@ -6,5 +6,8 @@ python:
   - "2.7"
   - "3.3"
   - "3.4"
-install: "pip install -r dev-requirements.txt --use-mirrors"
+  - "3.5"
+install:
+    - pip install .
+    - pip install -r dev-requirements.txt
 script: make test

@@ -130,7 +130,7 @@ VAT_NUMBER_CHECK_CASES = {
              True,
              business_name=u'NV UNILEVER BELGIUM - UNILEVER BELGIQUE - '
              u'UNILEVER BELGIE',
-             business_address=u'HUMANITEITSLAAN 292\n1190  VORST'
+             business_address=u'HUMANITEITSLAAN 292\n1190 VORST'
          )),
     ],
     'DK': [
