@@ -33,8 +33,10 @@ class ViesRegistry(Registry):
     """
 
     def check_vat_number(self, vat_number, country_code):
+        # Non-ISO code used for Greece.
         if country_code == 'GR':
             country_code = 'EL'
+
         # Request information about the VAT number.
         result = VatNumberCheckResult()
 
