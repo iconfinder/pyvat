@@ -121,6 +121,9 @@ def decompose_vat_number(vat_number, country_code=None):
     # Attempt to determine the country code of the VAT number if possible.
     if not country_code:
         country_code = vat_number[0:2]
+        # Non-ISO code used for Greece.
+        if country_code == 'EL':
+            country_code = 'GR'
 
         if country_code not in VAT_REGISTRIES:
             try:
