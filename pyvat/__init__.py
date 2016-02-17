@@ -134,7 +134,7 @@ def decompose_vat_number(vat_number, country_code=None):
         vat_number = vat_number[2:]
     elif vat_number[0:2] == country_code:
         vat_number = vat_number[2:]
-    elif country_code == 'GR' and vat_number[0:2] == 'EL':  # Non-ISO code used for Greece.
+    elif country_code == 'GR' and vat_number[0:2] == 'EL':
         vat_number = vat_number[2:]
 
     return vat_number, country_code
