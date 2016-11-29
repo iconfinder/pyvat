@@ -40,9 +40,6 @@ VAT_NUMBER_FORMAT_CASES = {
     'EE': [
         ('123456789', True),
     ],
-    'EL': [
-        ('012345678', True),
-    ],
     'ES': [
         ('X12345678', True),
         ('12345678X', True),
@@ -67,6 +64,9 @@ VAT_NUMBER_FORMAT_CASES = {
         ('123456789', True),
         ('123456789001', True),
         ('999999999999999999999999999999999999', False),
+    ],
+    'GR': [
+        ('012345678', True),
     ],
     'HR': [
         ('12345678901', True),
@@ -136,7 +136,7 @@ VAT_NUMBER_CHECK_CASES = {
              True,
              business_name=u'NV UNILEVER BELGIUM - UNILEVER BELGIQUE - '
              u'UNILEVER BELGIE',
-             business_address=u'HUMANITEITSLAAN 292\n1190  VORST'
+             business_address=u'HUMANITEITSLAAN 292\n1190 VORST'
          )),
     ],
     'DK': [

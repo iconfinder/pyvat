@@ -27,12 +27,12 @@ VAT_NUMBER_EXPRESSIONS = {
     'DE': re.compile(r'^\d{9}$'),
     'DK': re.compile(r'^\d{8}$'),
     'EE': re.compile(r'^\d{9}$'),
-    'EL': re.compile(r'^\d{9}$'),
     'ES': re.compile(r'^[\da-z]\d{7}[\da-z]$', re.IGNORECASE),
     'FI': re.compile(r'^\d{8}$'),
     'FR': re.compile(r'^[\da-hj-np-z]{2}\d{9}$', re.IGNORECASE),
     'GB': re.compile(r'^((\d{9})|(\d{12})|(GD\d{3})|(HA\d{3}))$',
                      re.IGNORECASE),
+    'GR': re.compile(r'^\d{9}$'),
     'HR': re.compile(r'^\d{11}$'),
     'HU': re.compile(r'^\d{8}$'),
     'IE': re.compile(r'^((\d{7}[a-z])|(\d[a-z]\d{5}[a-z])|(\d{6,7}[a-z]{2}))$',
@@ -75,11 +75,11 @@ VAT_REGISTRIES = {
     'DE': VIES_REGISTRY,
     'DK': VIES_REGISTRY,
     'EE': VIES_REGISTRY,
-    'EL': VIES_REGISTRY,
     'ES': VIES_REGISTRY,
     'FI': VIES_REGISTRY,
     'FR': VIES_REGISTRY,
     'GB': VIES_REGISTRY,
+    'GR': VIES_REGISTRY,
     'HU': VIES_REGISTRY,
     'HR': VIES_REGISTRY,
     'IE': VIES_REGISTRY,
@@ -121,6 +121,9 @@ def decompose_vat_number(vat_number, country_code=None):
     # Attempt to determine the country code of the VAT number if possible.
     if not country_code:
         country_code = vat_number[0:2]
+        # Non-ISO code used for Greece.
+        if country_code == 'EL':
+            country_code = 'GR'
 
         if country_code not in VAT_REGISTRIES:
             try:
@@ -130,6 +133,8 @@ def decompose_vat_number(vat_number, country_code=None):
                 return (None, None)
         vat_number = vat_number[2:]
     elif vat_number[0:2] == country_code:
+        vat_number = vat_number[2:]
+    elif country_code == 'GR' and vat_number[0:2] == 'EL':
         vat_number = vat_number[2:]
 
     return vat_number, country_code
