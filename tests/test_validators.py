@@ -136,14 +136,14 @@ VAT_NUMBER_CHECK_CASES = {
              True,
              business_name=u'NV UNILEVER BELGIUM - UNILEVER BELGIQUE - '
              u'UNILEVER BELGIE',
-             business_address=u'HUMANITEITSLAAN 292\n1190  VORST'
+             business_address=u'HUMANITEITSLAAN 292\n1190 VORST'
          )),
     ],
     'DK': [
         ('33779437', VatNumberCheckResult(
             True,
             business_name=u'ICONFINDER ApS',
-            business_address=u'Pilestr\xe6de 43 2\n1112 K\xf8benhavn K'
+            business_address=u'Bredgade 19E 2 sal\n1260 K\xf8benhavn K'
         )),
         ('99999O99', VatNumberCheckResult(False)),
         ('9999999', VatNumberCheckResult(False)),
