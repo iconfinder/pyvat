@@ -127,7 +127,7 @@ def decompose_vat_number(vat_number, country_code=None):
 
         if country_code not in VAT_REGISTRIES:
             try:
-                if not pycountry.countries.get(alpha2=country_code):
+                if not pycountry.countries.get(alpha_2=country_code):
                     return (None, None)
             except KeyError:
                 return (None, None)
