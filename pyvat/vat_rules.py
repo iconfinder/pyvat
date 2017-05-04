@@ -195,7 +195,7 @@ class GrVatRules(EuVatRulesMixin):
     """
 
     def get_vat_rate(self, item_type):
-        return Decimal(23)
+        return Decimal(24)
 
 
 class LuVatRules(EuVatRulesMixin):
@@ -205,7 +205,7 @@ class LuVatRules(EuVatRulesMixin):
     def get_vat_rate(self, item_type):
         if item_type.is_broadcasting_service:
             return Decimal(3)
-        return Decimal(15)
+        return Decimal(17)
 
 
 class PlVatRules(EuVatRulesMixin):
@@ -227,6 +227,8 @@ class EsVatRules(EuVatRulesMixin):
             return Decimal(4)
         return Decimal(21)
 
+# VAT rates are based on the report from January 1st, 2017
+# http://ec.europa.eu/taxation_customs/sites/taxation/files/resources/documents/taxation/vat/how_vat_works/rates/vat_rates_en.pdf
 
 VAT_RULES = {
     'AT': AtVatRules(),
@@ -238,6 +240,7 @@ VAT_RULES = {
     'DK': ConstantEuVatRateRules(25),
     'EE': ConstantEuVatRateRules(20),
     'GR': GrVatRules(),
+    'EL': GrVatRules(),                 # In the report from January 2017, Greece is labelled as EL.
     'ES': EsVatRules(),
     'FI': ConstantEuVatRateRules(24),
     'FR': FrVatRules(),
@@ -257,6 +260,7 @@ VAT_RULES = {
     'SE': ConstantEuVatRateRules(25),
     'SK': ConstantEuVatRateRules(20),
     'SI': ConstantEuVatRateRules(22),
+    'UK': ConstantEuVatRateRules(20),
 }
 """VAT rules by country.
 
