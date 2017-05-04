@@ -190,12 +190,12 @@ class FrVatRules(EuVatRulesMixin):
         return Decimal(20)
 
 
-class GrVatRules(EuVatRulesMixin):
+class ElVatRules(EuVatRulesMixin):
     """VAT rules for Greece.
     """
 
     def get_vat_rate(self, item_type):
-        return Decimal(23)
+        return Decimal(24)
 
 
 class LuVatRules(EuVatRulesMixin):
@@ -205,7 +205,7 @@ class LuVatRules(EuVatRulesMixin):
     def get_vat_rate(self, item_type):
         if item_type.is_broadcasting_service:
             return Decimal(3)
-        return Decimal(15)
+        return Decimal(17)
 
 
 class PlVatRules(EuVatRulesMixin):
@@ -228,6 +228,8 @@ class EsVatRules(EuVatRulesMixin):
         return Decimal(21)
 
 
+# VAT rates are based on the report from January 1st, 2017
+# http://ec.europa.eu/taxation_customs/sites/taxation/files/resources/documents/taxation/vat/how_vat_works/rates/vat_rates_en.pdf
 VAT_RULES = {
     'AT': AtVatRules(),
     'BE': ConstantEuVatRateRules(21),
@@ -237,7 +239,7 @@ VAT_RULES = {
     'DE': ConstantEuVatRateRules(19),
     'DK': ConstantEuVatRateRules(25),
     'EE': ConstantEuVatRateRules(20),
-    'GR': GrVatRules(),
+    'EL': ElVatRules(),
     'ES': EsVatRules(),
     'FI': ConstantEuVatRateRules(24),
     'FR': FrVatRules(),
@@ -258,6 +260,8 @@ VAT_RULES = {
     'SK': ConstantEuVatRateRules(20),
     'SI': ConstantEuVatRateRules(22),
 }
+
+
 """VAT rules by country.
 
 Maps an ISO 3316 alpha-2 country code to the VAT rules applicable in the given

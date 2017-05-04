@@ -24,11 +24,11 @@ tests_require = [
 
 setup(
     name='pyvat',
-    version='1.3.1',
+    version='1.3.2',
     description='VAT validation for Python',
-    author='Nick Bruun',
-    author_email='nick@bruun.co',
-    url='http://bruun.co/',
+    author='Iconfinder',
+    author_email='support@iconfinder.com',
+    url='http://www.iconfinder.com',
     packages=packages,
     package_data={'': ['LICENSE']},
     package_dir={'pyvat': 'pyvat'},
@@ -43,9 +43,9 @@ setup(
         'Natural Language :: English',
         'License :: OSI Approved :: Apache Software License',
         'Programming Language :: Python',
-        'Programming Language :: Python :: 2.6',
         'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3.3',
         'Programming Language :: Python :: 3.4',
+        'Programming Language :: Python :: 3.5',
     ),
 )
