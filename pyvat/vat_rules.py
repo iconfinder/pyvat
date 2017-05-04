@@ -227,9 +227,9 @@ class EsVatRules(EuVatRulesMixin):
             return Decimal(4)
         return Decimal(21)
 
+
 # VAT rates are based on the report from January 1st, 2017
 # http://ec.europa.eu/taxation_customs/sites/taxation/files/resources/documents/taxation/vat/how_vat_works/rates/vat_rates_en.pdf
-
 VAT_RULES = {
     'AT': AtVatRules(),
     'BE': ConstantEuVatRateRules(21),
@@ -260,6 +260,8 @@ VAT_RULES = {
     'SK': ConstantEuVatRateRules(20),
     'SI': ConstantEuVatRateRules(22),
 }
+
+
 """VAT rules by country.
 
 Maps an ISO 3316 alpha-2 country code to the VAT rules applicable in the given
