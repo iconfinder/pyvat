@@ -184,13 +184,13 @@ EXPECTED_VAT_RATES = {
         ItemType.enewspaper: Decimal(21),
     },
     'LU': {
-        ItemType.generic_physical_good: Decimal(15),
-        ItemType.generic_electronic_service: Decimal(15),
-        ItemType.generic_telecommunications_service: Decimal(15),
+        ItemType.generic_physical_good: Decimal(17),
+        ItemType.generic_electronic_service: Decimal(17),
+        ItemType.generic_telecommunications_service: Decimal(17),
         ItemType.generic_broadcasting_service: Decimal(3),
         ItemType.prepaid_broadcasting_service: Decimal(3),
-        ItemType.ebook: Decimal(15),
-        ItemType.enewspaper: Decimal(15),
+        ItemType.ebook: Decimal(17),
+        ItemType.enewspaper: Decimal(17),
     },
     'LV': {
         ItemType.generic_physical_good: Decimal(21),
