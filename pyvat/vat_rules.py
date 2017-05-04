@@ -190,7 +190,7 @@ class FrVatRules(EuVatRulesMixin):
         return Decimal(20)
 
 
-class GrVatRules(EuVatRulesMixin):
+class ElVatRules(EuVatRulesMixin):
     """VAT rules for Greece.
     """
 
@@ -239,8 +239,7 @@ VAT_RULES = {
     'DE': ConstantEuVatRateRules(19),
     'DK': ConstantEuVatRateRules(25),
     'EE': ConstantEuVatRateRules(20),
-    'GR': GrVatRules(),
-    'EL': GrVatRules(),                 # ISO 3316 alpha-2 country code uses EL and not GR for Greece.
+    'EL': ElVatRules(),
     'ES': EsVatRules(),
     'FI': ConstantEuVatRateRules(24),
     'FR': FrVatRules(),
