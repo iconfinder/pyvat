@@ -240,7 +240,7 @@ VAT_RULES = {
     'DK': ConstantEuVatRateRules(25),
     'EE': ConstantEuVatRateRules(20),
     'GR': GrVatRules(),
-    'EL': GrVatRules(),                 # In the report from January 2017, Greece is labelled as EL.
+    'EL': GrVatRules(),                 # ISO 3316 alpha-2 country code uses EL and not GR for Greece.
     'ES': EsVatRules(),
     'FI': ConstantEuVatRateRules(24),
     'FR': FrVatRules(),
@@ -260,7 +260,6 @@ VAT_RULES = {
     'SE': ConstantEuVatRateRules(25),
     'SK': ConstantEuVatRateRules(20),
     'SI': ConstantEuVatRateRules(22),
-    'UK': ConstantEuVatRateRules(20),
 }
 """VAT rules by country.
 

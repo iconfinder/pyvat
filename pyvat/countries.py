@@ -11,6 +11,7 @@ EU_COUNTRY_CODES = set([
     'FI',  # Finland.
     'FR',  # France.
     'GB',  # United Kingdom.
+    'EL',  # Greece.            # ISO 3316 alpha-2 country code uses EL and not GR for Greece.
     'GR',  # Greece.
     'HR',  # Croatia.
     'HU',  # Hungary.
