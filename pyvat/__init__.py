@@ -121,6 +121,11 @@ def decompose_vat_number(vat_number, country_code=None):
     # Attempt to determine the country code of the VAT number if possible.
     if not country_code:
         country_code = vat_number[0:2]
+
+        if any(c.isdigit() for c in country_code):
+            # Country code should not contain digits
+            return (vat_number, None)
+
         # Non-ISO code used for Greece.
         if country_code == 'EL':
             country_code = 'GR'
@@ -128,9 +133,10 @@ def decompose_vat_number(vat_number, country_code=None):
         if country_code not in VAT_REGISTRIES:
             try:
                 if not pycountry.countries.get(alpha_2=country_code):
-                    return (None, None)
+                    return (vat_number, None)
             except KeyError:
-                return (None, None)
+                # country code not found
+                return (vat_number, None)
         vat_number = vat_number[2:]
     elif vat_number[0:2] == country_code:
         vat_number = vat_number[2:]
