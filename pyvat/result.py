@@ -3,9 +3,8 @@ class VatNumberCheckResult(object):
 
     :ivar is_valid:
         Boolean value indicating if the checked VAT number was deemed to be
-        valid. ``True`` if the VAT number is valid, ``False`` if the VAT
-        number is positively invalid or ``None`` if the validity is
-        nondeterministic due to adverse conditions.
+        valid. ``True`` if the VAT number is valid or ``False`` if the VAT
+        number is positively invalid.
     :ivar log_lines:
         Check log lines.
     :ivar business_name: Optional business name retrieved for the VAT number.

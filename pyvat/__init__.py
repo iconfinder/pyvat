@@ -112,7 +112,7 @@ def decompose_vat_number(vat_number, country_code=None):
         VAT number.
     :returns:
         a :class:`tuple` containing the VAT number and country code or
-        ``(None, None)`` if decomposition failed.
+        ``(vat_number, None)`` if decomposition failed.
     """
 
     # Clean the VAT number.
@@ -158,8 +158,7 @@ def is_vat_number_format_valid(vat_number, country_code=None):
         detection.
     :returns:
         ``True`` if the format of the VAT number can be fully asserted as valid
-        or ``False`` if not, otherwise ``None`` indicating that the VAT number
-        format may or may not be valid.
+        or ``False`` if not.
     """
 
     vat_number, country_code = decompose_vat_number(vat_number, country_code)
