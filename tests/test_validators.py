@@ -143,7 +143,7 @@ VAT_NUMBER_CHECK_CASES = {
         ('33779437', VatNumberCheckResult(
             True,
             business_name=u'ICONFINDER ApS',
-            business_address=u'Bredgade 19E 2 sal\n1260 K\xf8benhavn K'
+            business_address='Højbro Plads 8 2\n1200 København K'
         )),
         ('99999O99', VatNumberCheckResult(False)),
         ('9999999', VatNumberCheckResult(False)),
@@ -154,7 +154,7 @@ VAT_NUMBER_CHECK_CASES = {
          VatNumberCheckResult(
              True,
              business_name=u'SPLAY CONSULTING LIMITED',
-             business_address=u'22 ADMIRAL PARK ,BALDOYLE ,DUBLIN 13'
+             business_address=u'22 ADMIRAL PARK, BALDOYLE, DUBLIN 13'
          )),
     ],
     'NL': [
