@@ -156,16 +156,15 @@ def is_vat_number_format_valid(vat_number, country_code=None):
         format may or may not be valid.
     """
 
-    # Decompose the VAT number.
     vat_number, country_code = decompose_vat_number(vat_number, country_code)
+
     if not vat_number or not country_code:
         return False
-
-    # Test the VAT number against an expression if possible.
-    if country_code not in VAT_NUMBER_EXPRESSIONS:
-        return None
-
-    if not VAT_NUMBER_EXPRESSIONS[country_code].match(vat_number):
+    elif not any(c.isdigit() for c in vat_number):
+        return False
+    elif country_code not in VAT_NUMBER_EXPRESSIONS:
+        return False
+    elif not VAT_NUMBER_EXPRESSIONS[country_code].match(vat_number):
         return False
 
     return True
