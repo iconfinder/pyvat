@@ -1,7 +1,8 @@
 import requests
 import xml.dom.minidom
 from .result import VatNumberCheckResult
-from .xml_utils import get_first_child_element, get_text
+from .xml_utils import get_first_child_element, get_text, NodeNotFoundError
+from .exceptions import ServerError
 
 
 class Registry(object):
@@ -103,21 +104,25 @@ class ViesRegistry(Registry):
         #     </checkVatResponse>
         #   </soap:Body>
         # </soap:Envelope>
+        result_dom = xml.dom.minidom.parseString(response.text.encode('utf-8'))
+
+        envelope_node = result_dom.documentElement
+        if envelope_node.tagName != 'soap:Envelope':
+            raise ValueError('expected response XML root element to be a SOAP envelope')
+
+        body_node = get_first_child_element(envelope_node, 'soap:Body')
+
+        # Check for server errors
         try:
-            result_dom = xml.dom.minidom.parseString(
-                response.text.encode('utf-8')
-            )
+            error_node = get_first_child_element(body_node, 'soap:Fault')
+            faultcode = error_node.getElementsByTagName('faultstring')[0].firstChild.nodeValue
+            raise ServerError(faultcode)
+        except NodeNotFoundError as e:
+            pass
 
-            envelope_node = result_dom.documentElement
-            if envelope_node.tagName != 'soap:Envelope':
-                raise ValueError('expected response XML root element to be a '
-                                 'SOAP envelope')
-
-            body_node = get_first_child_element(envelope_node, 'soap:Body')
-            check_vat_response_node = \
-                get_first_child_element(body_node, 'checkVatResponse')
-            valid_node = get_first_child_element(check_vat_response_node,
-                                                 'valid')
+        try:
+            check_vat_response_node = get_first_child_element(body_node, 'checkVatResponse')
+            valid_node = get_first_child_element(check_vat_response_node, 'valid')
         except Exception as e:
             result.log_lines.append(u'< Response is nondeterministic due to '
                                     u'invalid response body: %r' % (e))
@@ -135,15 +140,13 @@ class ViesRegistry(Registry):
 
         # Parse the business name and address if possible.
         try:
-            name_node = get_first_child_element(check_vat_response_node,
-                                                'name')
+            name_node = get_first_child_element(check_vat_response_node, 'name')
             result.business_name = get_text(name_node).strip() or None
         except:
             pass
 
         try:
-            address_node = get_first_child_element(check_vat_response_node,
-                                                   'address')
+            address_node = get_first_child_element(check_vat_response_node, 'address')
             result.business_address = get_text(address_node).strip() or None
         except:
             pass

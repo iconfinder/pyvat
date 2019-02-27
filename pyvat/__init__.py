@@ -112,7 +112,7 @@ def decompose_vat_number(vat_number, country_code=None):
         VAT number.
     :returns:
         a :class:`tuple` containing the VAT number and country code or
-        ``(None, None)`` if decomposition failed.
+        ``(vat_number, None)`` if decomposition failed.
     """
 
     # Clean the VAT number.
@@ -121,6 +121,11 @@ def decompose_vat_number(vat_number, country_code=None):
     # Attempt to determine the country code of the VAT number if possible.
     if not country_code:
         country_code = vat_number[0:2]
+
+        if any(c.isdigit() for c in country_code):
+            # Country code should not contain digits
+            return (vat_number, None)
+
         # Non-ISO code used for Greece.
         if country_code == 'EL':
             country_code = 'GR'
@@ -128,9 +133,10 @@ def decompose_vat_number(vat_number, country_code=None):
         if country_code not in VAT_REGISTRIES:
             try:
                 if not pycountry.countries.get(alpha_2=country_code):
-                    return (None, None)
+                    return (vat_number, None)
             except KeyError:
-                return (None, None)
+                # country code not found
+                return (vat_number, None)
         vat_number = vat_number[2:]
     elif vat_number[0:2] == country_code:
         vat_number = vat_number[2:]
@@ -152,20 +158,18 @@ def is_vat_number_format_valid(vat_number, country_code=None):
         detection.
     :returns:
         ``True`` if the format of the VAT number can be fully asserted as valid
-        or ``False`` if not, otherwise ``None`` indicating that the VAT number
-        format may or may not be valid.
+        or ``False`` if not.
     """
 
-    # Decompose the VAT number.
     vat_number, country_code = decompose_vat_number(vat_number, country_code)
+
     if not vat_number or not country_code:
         return False
-
-    # Test the VAT number against an expression if possible.
-    if country_code not in VAT_NUMBER_EXPRESSIONS:
-        return None
-
-    if not VAT_NUMBER_EXPRESSIONS[country_code].match(vat_number):
+    elif not any(c.isdigit() for c in vat_number):
+        return False
+    elif country_code not in VAT_NUMBER_EXPRESSIONS:
+        return False
+    elif not VAT_NUMBER_EXPRESSIONS[country_code].match(vat_number):
         return False
 
     return True
