@@ -11,7 +11,7 @@ from .vat_rules import VAT_RULES
 __version__ = '1.3.1'
 
 
-WHITESPACE_EXPRESSION = re.compile('[\s\-]+')
+WHITESPACE_EXPRESSION = re.compile(r'[\s\-]+')
 """Whitespace expression.
 
 Used for cleaning VAT numbers.

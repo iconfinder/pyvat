@@ -232,8 +232,13 @@ class CheckVatNumberTestCase(TestCase):
         self.assertIsInstance(actual, VatNumberCheckResult)
         self.assertEqual(expected.is_valid, actual.is_valid)
         self.assertEqual(expected.business_name, actual.business_name)
-        self.assertEqual(expected.business_address,
-                         actual.business_address)
+        expected_address = expected.business_address
+        if expected_address:
+            expected_address = expected_address.lower()
+        actual_address = actual.business_address
+        if actual_address:
+            actual_address = actual_address.lower()
+        self.assertEqual(expected_address, actual_address)
 
     def test_no_country_code(self):
         """check_vat_number('..', country_code=None)
