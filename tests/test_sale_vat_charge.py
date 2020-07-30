@@ -316,7 +316,7 @@ class GetSaleVatChargeTestCase(TestCase):
                                              else EXPECTED_VAT_RATES[seller_cc][it])
 
                         self.assertEqual(vat_charge.rate,
-                                         EXPECTED_VAT_RATES[seller_cc][it])
+                                         expected_vat_rate)
                         self.assertEqual(vat_charge.country_code,
                                          seller_cc)
 
