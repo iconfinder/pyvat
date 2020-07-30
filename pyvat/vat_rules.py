@@ -227,7 +227,17 @@ class EsVatRules(EuVatRulesMixin):
             return Decimal(4)
         return Decimal(21)
 
+    
+class DeVatRules(EuVatRulesMixin):
+    """VAT rules for Germany.
+    """
 
+    def get_vat_rate(self, item_type):
+        if item_type == ItemType.ebook:
+            return Decimal(5)
+        return Decimal(16)
+
+    
 # VAT rates are based on the report from January 1st, 2017
 # http://ec.europa.eu/taxation_customs/sites/taxation/files/resources/documents/taxation/vat/how_vat_works/rates/vat_rates_en.pdf
 VAT_RULES = {
@@ -236,7 +246,7 @@ VAT_RULES = {
     'BG': ConstantEuVatRateRules(20),
     'CY': ConstantEuVatRateRules(19),
     'CZ': ConstantEuVatRateRules(21),
-    'DE': ConstantEuVatRateRules(19),
+    'DE': DeVatRules(),
     'DK': ConstantEuVatRateRules(25),
     'EE': ConstantEuVatRateRules(20),
     'EL': ElVatRules(),
