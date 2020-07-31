@@ -227,7 +227,7 @@ class EsVatRules(EuVatRulesMixin):
             return Decimal(4)
         return Decimal(21)
 
-    
+
 class DeVatRules(EuVatRulesMixin):
     """VAT rules for Germany.
     """
@@ -237,7 +237,7 @@ class DeVatRules(EuVatRulesMixin):
             return Decimal(5)
         return Decimal(16)
 
-    
+
 # VAT rates are based on the report from January 1st, 2017
 # http://ec.europa.eu/taxation_customs/sites/taxation/files/resources/documents/taxation/vat/how_vat_works/rates/vat_rates_en.pdf
 VAT_RULES = {
