@@ -58,13 +58,13 @@ EXPECTED_VAT_RATES = {
         ItemType.enewspaper: Decimal(21),
     },
     'DE': {
-        ItemType.generic_physical_good: Decimal(19),
-        ItemType.generic_electronic_service: Decimal(19),
-        ItemType.generic_telecommunications_service: Decimal(19),
-        ItemType.generic_broadcasting_service: Decimal(19),
-        ItemType.prepaid_broadcasting_service: Decimal(19),
-        ItemType.ebook: Decimal(19),
-        ItemType.enewspaper: Decimal(19),
+        ItemType.generic_physical_good: Decimal(16),
+        ItemType.generic_electronic_service: Decimal(16),
+        ItemType.generic_telecommunications_service: Decimal(16),
+        ItemType.generic_broadcasting_service: Decimal(16),
+        ItemType.prepaid_broadcasting_service: Decimal(16),
+        ItemType.ebook: Decimal(5),
+        ItemType.enewspaper: Decimal(16),
     },
     'DK': {
         ItemType.generic_physical_good: Decimal(25),
@@ -274,18 +274,6 @@ SUPPORTED_ITEM_TYPES = [
     ItemType.enewspaper,
 ]
 
-EXTRAORDINARY_EXPECTED_VAT_RATES= {
-   'DE': {
-        ItemType.generic_physical_good:              Decimal(16),
-        ItemType.generic_electronic_service:         Decimal(16),
-        ItemType.generic_telecommunications_service: Decimal(16),
-        ItemType.generic_broadcasting_service:       Decimal(16),
-        ItemType.prepaid_broadcasting_service:       Decimal(16),
-        ItemType.ebook:                              Decimal(5),
-        ItemType.enewspaper:                         Decimal(16),
-    },
-}
-
 class GetSaleVatChargeTestCase(TestCase):
     """Test case for :func:`get_sale_vat_charge`.
     """
@@ -311,12 +299,8 @@ class GetSaleVatChargeTestCase(TestCase):
                         self.assertEqual(vat_charge.action,
                                          VatChargeAction.charge)
 
-                        expected_vat_rate = (EXTRAORDINARY_EXPECTED_VAT_RATES[seller_cc][it]
-                                             if seller_cc in EXTRAORDINARY_EXPECTED_VAT_RATES
-                                             else EXPECTED_VAT_RATES[seller_cc][it])
-
                         self.assertEqual(vat_charge.rate,
-                                         expected_vat_rate)
+                                         EXPECTED_VAT_RATES[seller_cc][it])
                         self.assertEqual(vat_charge.country_code,
                                          seller_cc)
 
