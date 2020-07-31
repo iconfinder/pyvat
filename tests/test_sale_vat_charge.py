@@ -274,6 +274,7 @@ SUPPORTED_ITEM_TYPES = [
     ItemType.enewspaper,
 ]
 
+
 class GetSaleVatChargeTestCase(TestCase):
     """Test case for :func:`get_sale_vat_charge`.
     """
