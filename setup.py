@@ -24,7 +24,7 @@ tests_require = [
 
 setup(
     name='pyvat',
-    version='1.3.2',
+    version='1.3.3',
     description='VAT validation for Python',
     author='Iconfinder',
     author_email='support@iconfinder.com',
