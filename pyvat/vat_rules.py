@@ -5,7 +5,6 @@ from .item_type import ItemType
 from .vat_charge import VatCharge, VatChargeAction
 from .utils import ensure_decimal
 
-
 JANUARY_1_2015 = datetime.date(2015, 1, 1)
 
 
@@ -93,7 +92,7 @@ class EuVatRulesMixin(object):
         # if the buyer is a consumer, we must charge VAT in the buyer's country
         # of residence.
         if seller.country_code == buyer.country_code or \
-           (not buyer.is_business and date >= JANUARY_1_2015):
+                (not buyer.is_business and date >= JANUARY_1_2015):
             return VatCharge(VatChargeAction.charge,
                              buyer.country_code,
                              self.get_vat_rate(item_type))
@@ -249,7 +248,8 @@ VAT_RULES = {
     'DE': DeVatRules(),
     'DK': ConstantEuVatRateRules(25),
     'EE': ConstantEuVatRateRules(20),
-    'EL': ElVatRules(), 'GR': ElVatRules(), # Synonymous country code for Greece
+    'EL': ElVatRules(),
+    'GR': ElVatRules(),  # Synonymous country code for Greece
     'ES': EsVatRules(),
     'FI': ConstantEuVatRateRules(24),
     'FR': FrVatRules(),
@@ -270,7 +270,6 @@ VAT_RULES = {
     'SK': ConstantEuVatRateRules(20),
     'SI': ConstantEuVatRateRules(22),
 }
-
 
 """VAT rules by country.
 
