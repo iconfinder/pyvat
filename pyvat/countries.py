@@ -11,7 +11,7 @@ EU_COUNTRY_CODES = set([
     'FI',  # Finland.
     'FR',  # France.
     'GB',  # United Kingdom.
-    'EL', 'GR'  # Greece.
+    'EL', 'GR',  # Greece.
     'HR',  # Croatia.
     'HU',  # Hungary.
     'IE',  # Ireland.
