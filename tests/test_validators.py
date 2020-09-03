@@ -140,10 +140,10 @@ VAT_NUMBER_CHECK_CASES = {
          )),
     ],
     'DK': [
-        ('33779437', VatNumberCheckResult(
+        ('54562519', VatNumberCheckResult(
             True,
-            business_name=u'ICONFINDER ApS',
-            business_address='Højbro Plads 8 2\n1200 København K'
+            business_name=u'Lego A/S ',
+            business_address='Åstvej 1\n7190 Billund'
         )),
         ('99999O99', VatNumberCheckResult(False)),
         ('9999999', VatNumberCheckResult(False)),
