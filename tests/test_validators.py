@@ -142,7 +142,7 @@ VAT_NUMBER_CHECK_CASES = {
     'DK': [
         ('54562519', VatNumberCheckResult(
             True,
-            business_name=u'Lego A/S ',
+            business_name=u'Lego A/S',
             business_address='Åstvej 1\n7190 Billund'
         )),
         ('99999O99', VatNumberCheckResult(False)),
