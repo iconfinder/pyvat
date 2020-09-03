@@ -42,7 +42,7 @@ VAT_NUMBER_EXPRESSIONS = {
     'LU': re.compile(r'^\d{8}$'),
     'LV': re.compile(r'^\d{11}$'),
     'MT': re.compile(r'^\d{8}$'),
-    'NL': re.compile(r'^\d{9}B\d{2,3}$', re.IGNORECASE),
+    'NL': re.compile(r'^\d{9}B\d{2}$', re.IGNORECASE),
     'PL': re.compile(r'^\d{10}$'),
     'PT': re.compile(r'^\d{9}$'),
     'RO': re.compile(r'^\d{2,10}$'),
