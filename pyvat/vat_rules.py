@@ -256,7 +256,7 @@ VAT_RULES = {
     'GB': ConstantEuVatRateRules(20),
     'HR': ConstantEuVatRateRules(25),
     'HU': ConstantEuVatRateRules(27),
-    'IE': ConstantEuVatRateRules(23),
+    'IE': ConstantEuVatRateRules(21),
     'IT': ConstantEuVatRateRules(22),
     'LT': ConstantEuVatRateRules(21),
     'LU': LuVatRules(),
