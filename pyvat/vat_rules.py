@@ -248,9 +248,6 @@ class GbVatRules(ConstantEuVatRateRules):
     """
 
     def get_vat_rate(self, item_type):
-        if item_type == ItemType.ebook:
-            return Decimal(0)
-
         return super(GbVatRules, self).get_vat_rate(item_type)
 
 
