@@ -117,7 +117,7 @@ EXPECTED_VAT_RATES = {
         ItemType.generic_telecommunications_service: Decimal(20),
         ItemType.generic_broadcasting_service: Decimal(20),
         ItemType.prepaid_broadcasting_service: Decimal(20),
-        ItemType.ebook: Decimal(20),
+        ItemType.ebook: Decimal(0),
         ItemType.enewspaper: Decimal(20),
     },
     'EL': {
