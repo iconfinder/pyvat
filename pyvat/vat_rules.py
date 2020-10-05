@@ -172,7 +172,116 @@ class AtVatRules(EuVatRulesMixin):
     def get_vat_rate(self, item_type):
         if item_type == ItemType.prepaid_broadcasting_service:
             return Decimal(10)
+        elif item_type == ItemType.ebook:
+            return Decimal(10)
         return Decimal(20)
+
+
+class CzVatRules(ConstantEuVatRateRules):
+    """VAT rules for Czech Republic.
+    """
+
+    def get_vat_rate(self, item_type):
+        if item_type == ItemType.ebook:
+            return Decimal(10)
+
+        return super(CzVatRules, self).get_vat_rate(item_type)
+
+
+class BeVatRules(ConstantEuVatRateRules):
+    """VAT rules for Belgium.
+    """
+
+    def get_vat_rate(self, item_type):
+        if item_type == ItemType.ebook:
+            return Decimal(6)
+
+        return super(BeVatRules, self).get_vat_rate(item_type)
+
+
+class IeVatRules(ConstantEuVatRateRules):
+    """VAT rules for Ireland.
+    """
+
+    def get_vat_rate(self, item_type):
+        if item_type == ItemType.ebook:
+            return Decimal(9)
+
+        return super(IeVatRules, self).get_vat_rate(item_type)
+
+
+class FiVatRules(ConstantEuVatRateRules):
+    """VAT rules for  Finland.
+    """
+
+    def get_vat_rate(self, item_type):
+        if item_type == ItemType.ebook:
+            return Decimal(10)
+
+        return super(FiVatRules, self).get_vat_rate(item_type)
+
+
+class NlVatRules(ConstantEuVatRateRules):
+    """VAT rules for Netherlands.
+    """
+
+    def get_vat_rate(self, item_type):
+        if item_type == ItemType.ebook:
+            return Decimal(9)
+
+        return super(NlVatRules, self).get_vat_rate(item_type)
+
+
+class MtVatRules(ConstantEuVatRateRules):
+    """VAT rules for Malta.
+    """
+
+    def get_vat_rate(self, item_type):
+        if item_type == ItemType.ebook:
+            return Decimal(5)
+
+        return super(MtVatRules, self).get_vat_rate(item_type)
+
+
+class GbVatRules(ConstantEuVatRateRules):
+    """VAT rules for United Kingdom.
+    """
+
+    def get_vat_rate(self, item_type):
+        return super(GbVatRules, self).get_vat_rate(item_type)
+
+
+class SeVatRules(ConstantEuVatRateRules):
+    """VAT rules for Sweden.
+    """
+
+    def get_vat_rate(self, item_type):
+        if item_type == ItemType.ebook:
+            return Decimal(6)
+
+        return super(SeVatRules, self).get_vat_rate(item_type)
+
+
+class HrVatRules(ConstantEuVatRateRules):
+    """VAT rules for Croatia.
+    """
+
+    def get_vat_rate(self, item_type):
+        if item_type == ItemType.ebook:
+            return Decimal(5)
+
+        return super(HrVatRules, self).get_vat_rate(item_type)
+
+
+class PtVatRules(ConstantEuVatRateRules):
+    """VAT rules for Portugal.
+    """
+
+    def get_vat_rate(self, item_type):
+        if item_type == ItemType.ebook:
+            return Decimal(6)
+
+        return super(PtVatRules, self).get_vat_rate(item_type)
 
 
 class FrVatRules(EuVatRulesMixin):
@@ -204,6 +313,8 @@ class LuVatRules(EuVatRulesMixin):
     def get_vat_rate(self, item_type):
         if item_type.is_broadcasting_service:
             return Decimal(3)
+        elif item_type == ItemType.ebook:
+            return Decimal(3)
         return Decimal(17)
 
 
@@ -214,6 +325,8 @@ class PlVatRules(EuVatRulesMixin):
     def get_vat_rate(self, item_type):
         if item_type.is_broadcasting_service:
             return Decimal(8)
+        if item_type == ItemType.ebook:
+            return Decimal(5)
         return Decimal(23)
 
 
@@ -233,7 +346,7 @@ class DeVatRules(EuVatRulesMixin):
 
     def get_vat_rate(self, item_type):
         if item_type == ItemType.ebook:
-            return Decimal(5)
+            return Decimal(7)
         return Decimal(16)
 
 
@@ -241,32 +354,32 @@ class DeVatRules(EuVatRulesMixin):
 # http://ec.europa.eu/taxation_customs/sites/taxation/files/resources/documents/taxation/vat/how_vat_works/rates/vat_rates_en.pdf
 VAT_RULES = {
     'AT': AtVatRules(),
-    'BE': ConstantEuVatRateRules(21),
+    'BE': BeVatRules(21),
     'BG': ConstantEuVatRateRules(20),
     'CY': ConstantEuVatRateRules(19),
-    'CZ': ConstantEuVatRateRules(21),
+    'CZ': CzVatRules(21),
     'DE': DeVatRules(),
     'DK': ConstantEuVatRateRules(25),
     'EE': ConstantEuVatRateRules(20),
     'EL': ElVatRules(),
     'GR': ElVatRules(),  # Synonymous country code for Greece
     'ES': EsVatRules(),
-    'FI': ConstantEuVatRateRules(24),
+    'FI': FiVatRules(24),
     'FR': FrVatRules(),
-    'GB': ConstantEuVatRateRules(20),
-    'HR': ConstantEuVatRateRules(25),
+    'GB': GbVatRules(20),
+    'HR': HrVatRules(25),
     'HU': ConstantEuVatRateRules(27),
-    'IE': ConstantEuVatRateRules(21),
+    'IE': IeVatRules(21),
     'IT': ConstantEuVatRateRules(22),
     'LT': ConstantEuVatRateRules(21),
     'LU': LuVatRules(),
     'LV': ConstantEuVatRateRules(21),
-    'MT': ConstantEuVatRateRules(18),
-    'NL': ConstantEuVatRateRules(21),
+    'MT': MtVatRules(18),
+    'NL': NlVatRules(21),
     'PL': PlVatRules(),
-    'PT': ConstantEuVatRateRules(23),
+    'PT': PtVatRules(23),
     'RO': ConstantEuVatRateRules(19),
-    'SE': ConstantEuVatRateRules(25),
+    'SE': SeVatRules(25),
     'SK': ConstantEuVatRateRules(20),
     'SI': ConstantEuVatRateRules(22),
 }
