@@ -342,7 +342,7 @@ class DeVatRules(EuVatRulesMixin):
         return Decimal(16)
 
 
-# VAT rates are based on the report from January 1st, 2017
+# VAT rates are based on the report from January 1st, 2020
 # http://ec.europa.eu/taxation_customs/sites/taxation/files/resources/documents/taxation/vat/how_vat_works/rates/vat_rates_en.pdf
 VAT_RULES = {
     'AT': AtVatRules(),
