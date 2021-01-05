@@ -3,9 +3,9 @@ try:
     from setuptools import setup
 except ImportError:
     from distutils.core import setup
-    
+
 README = readfile('README.rst')
-    
+
 packages = [
     'pyvat',
 ]
@@ -27,12 +27,14 @@ setup(
     name='pyvat',
     version='1.3.7',
     description='VAT validation for Python',
+    long_description=README,
+    long_description_content_type='text/x-rst'
     author='Iconfinder',
     author_email='support@iconfinder.com',
     url = 'https://www.iconfinder.com',
     project_urls = {
         'Issue Tracker': 'https://github.com/iconfinder/pyvat/issues',
-    },   
+    },
     packages=packages,
     package_data={'': ['LICENSE']},
     package_dir={'pyvat': 'pyvat'},
