@@ -243,14 +243,6 @@ class MtVatRules(ConstantEuVatRateRules):
         return super(MtVatRules, self).get_vat_rate(item_type)
 
 
-class GbVatRules(ConstantEuVatRateRules):
-    """VAT rules for United Kingdom.
-    """
-
-    def get_vat_rate(self, item_type):
-        return super(GbVatRules, self).get_vat_rate(item_type)
-
-
 class SeVatRules(ConstantEuVatRateRules):
     """VAT rules for Sweden.
     """
@@ -350,7 +342,7 @@ class DeVatRules(EuVatRulesMixin):
         return Decimal(16)
 
 
-# VAT rates are based on the report from January 1st, 2017
+# VAT rates are based on the report from January 1st, 2020
 # http://ec.europa.eu/taxation_customs/sites/taxation/files/resources/documents/taxation/vat/how_vat_works/rates/vat_rates_en.pdf
 VAT_RULES = {
     'AT': AtVatRules(),
@@ -366,7 +358,6 @@ VAT_RULES = {
     'ES': EsVatRules(),
     'FI': FiVatRules(24),
     'FR': FrVatRules(),
-    'GB': GbVatRules(20),
     'HR': HrVatRules(25),
     'HU': ConstantEuVatRateRules(27),
     'IE': IeVatRules(21),

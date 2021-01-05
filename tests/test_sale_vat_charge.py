@@ -111,15 +111,6 @@ EXPECTED_VAT_RATES = {
         ItemType.ebook: Decimal('5.5'),
         ItemType.enewspaper: Decimal('2.1'),
     },
-    'GB': {
-        ItemType.generic_physical_good: Decimal(20),
-        ItemType.generic_electronic_service: Decimal(20),
-        ItemType.generic_telecommunications_service: Decimal(20),
-        ItemType.generic_broadcasting_service: Decimal(20),
-        ItemType.prepaid_broadcasting_service: Decimal(20),
-        ItemType.ebook: Decimal(0),
-        ItemType.enewspaper: Decimal(20),
-    },
     'EL': {
         ItemType.generic_physical_good: Decimal(24),
         ItemType.generic_electronic_service: Decimal(24),
