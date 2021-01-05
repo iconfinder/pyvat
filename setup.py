@@ -28,7 +28,7 @@ setup(
     version='1.3.8',
     description='VAT validation for Python',
     long_description=README,
-    long_description_content_type='text/x-rst'
+    long_description_content_type='text/x-rst',
     author='Iconfinder',
     author_email='support@iconfinder.com',
     url = 'https://www.iconfinder.com',
