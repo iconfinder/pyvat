@@ -1,5 +1,8 @@
 import requests
 import xml.dom.minidom
+
+from requests import Timeout
+
 from .result import VatNumberCheckResult
 from .xml_utils import get_first_child_element, get_text, NodeNotFoundError
 from .exceptions import ServerError
@@ -33,6 +36,9 @@ class ViesRegistry(Registry):
     """URL for the VAT checking service.
     """
 
+    DEFAULT_TIMEOUT = 8
+    """Timeout for the requests."""
+
     def check_vat_number(self, vat_number, country_code):
         # Non-ISO code used for Greece.
         if country_code == 'GR':
@@ -42,15 +48,15 @@ class ViesRegistry(Registry):
         result = VatNumberCheckResult()
 
         request_data = (
-            u'<?xml version="1.0" encoding="UTF-8"?><SOAP-ENV:Envelope'
-            u' xmlns:ns0="urn:ec.europa.eu:taxud:vies:services:checkVa'
-            u't:types" xmlns:ns1="http://schemas.xmlsoap.org/soap/enve'
-            u'lope/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-insta'
-            u'nce" xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/env'
-            u'elope/"><SOAP-ENV:Header/><ns1:Body><ns0:checkVat><ns0:c'
-            u'ountryCode>%s</ns0:countryCode><ns0:vatNumber>%s</ns0:va'
-            u'tNumber></ns0:checkVat></ns1:Body></SOAP-ENV:Envelope>' %
-            (country_code, vat_number)
+                u'<?xml version="1.0" encoding="UTF-8"?><SOAP-ENV:Envelope'
+                u' xmlns:ns0="urn:ec.europa.eu:taxud:vies:services:checkVa'
+                u't:types" xmlns:ns1="http://schemas.xmlsoap.org/soap/enve'
+                u'lope/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-insta'
+                u'nce" xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/env'
+                u'elope/"><SOAP-ENV:Header/><ns1:Body><ns0:checkVat><ns0:c'
+                u'ountryCode>%s</ns0:countryCode><ns0:vatNumber>%s</ns0:va'
+                u'tNumber></ns0:checkVat></ns1:Body></SOAP-ENV:Envelope>' %
+                (country_code, vat_number)
         )
 
         result.log_lines += [
@@ -64,8 +70,13 @@ class ViesRegistry(Registry):
                 data=request_data.encode('utf-8'),
                 headers={
                     'Content-Type': 'text/xml; charset=utf-8',
-                }
+                },
+                timeout=self.DEFAULT_TIMEOUT
             )
+        except Timeout as e:
+            result.log_lines.append(u'< Request to EU VIEW registry timed out:'
+                                    u' {}'.format(e))
+            return result
         except Exception as exception:
             # Do not completely fail problematic requests.
             result.log_lines.append(u'< Request failed with exception: %r' %
@@ -77,11 +88,11 @@ class ViesRegistry(Registry):
             u'< Response with status %d of content type %s:' %
             (response.status_code, response.headers['Content-Type']),
             response.text,
-        ]
+            ]
 
         # Do not completely fail problematic requests.
         if response.status_code != 200 or \
-           not response.headers['Content-Type'].startswith('text/xml'):
+                not response.headers['Content-Type'].startswith('text/xml'):
             result.log_lines.append(u'< Response is nondeterministic due to '
                                     u'invalid response status code or MIME '
                                     u'type')
