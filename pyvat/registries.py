@@ -74,7 +74,6 @@ class ViesRegistry(Registry):
                 timeout=self.DEFAULT_TIMEOUT
             )
         except Timeout as e:
-            # Do not completely fail problematic requests.
             result.log_lines.append(u'< Request to EU VIEW registry timed out:'
                                     u' {}'.format(e))
             return result
