@@ -34,8 +34,8 @@ setup(
     long_description_content_type='text/x-rst',
     author='Iconfinder',
     author_email='support@iconfinder.com',
-    url = 'https://www.iconfinder.com',
-    project_urls = {
+    url='https://www.iconfinder.com',
+    project_urls={
         'Issue Tracker': 'https://github.com/iconfinder/pyvat/issues',
     },
     packages=packages,
