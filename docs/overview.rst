@@ -26,7 +26,6 @@ EL                 Greece                `VIES FAQ Q11`_
 ES                 Spain                 `VIES FAQ Q11`_
 FI                 Finland               `VIES FAQ Q11`_
 FR                 France                `VIES FAQ Q11`_
-GB                 United Kingdom        `VIES FAQ Q11`_
 HU                 Hungary               `VIES FAQ Q11`_
 HR                 Croatia               `VIES FAQ Q11`_
 IE                 Ireland               `VIES FAQ Q11`_
@@ -63,7 +62,6 @@ EL                 Greece                `VIES web service`_
 ES                 Spain                 `VIES web service`_
 FI                 Finland               `VIES web service`_
 FR                 France                `VIES web service`_
-GB                 United Kingdom        `VIES web service`_
 HU                 Hungary               `VIES web service`_
 HR                 Croatia               `VIES web service`_
 IE                 Ireland               `VIES web service`_
