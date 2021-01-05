@@ -28,7 +28,10 @@ setup(
     description='VAT validation for Python',
     author='Iconfinder',
     author_email='support@iconfinder.com',
-    url='http://www.iconfinder.com',
+    url = 'https://www.iconfinder.com',
+    project_urls = {
+        'Issue Tracker': 'https://github.com/iconfinder/pyvat/issues',
+    },   
     packages=packages,
     package_data={'': ['LICENSE']},
     package_dir={'pyvat': 'pyvat'},
