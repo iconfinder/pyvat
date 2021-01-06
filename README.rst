@@ -12,7 +12,7 @@ Calculation of VAT rates for sales is supported within the EU for items covered 
 
 
 Installation
-------------
+============
 
 To install requests, do yourself a favor and don't use anything other than `pip <http://www.pip-installer.org/>`_:
 

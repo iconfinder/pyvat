@@ -4,10 +4,8 @@ try:
 except ImportError:
     from distutils.core import setup
 
-from os import path
-this_directory = path.abspath(path.dirname(__file__))
-with open(path.join(this_directory, 'README.rst')) as f:
-    long_description = f.read()
+with open("README.md", "r", encoding="utf-8") as fh:
+    long_description = fh.read()
 
 packages = [
     'pyvat',
@@ -31,7 +29,7 @@ setup(
     version='1.3.10',
     description='VAT validation for Python',
     long_description=long_description,
-    long_description_content_type='text/x-rst',
+    long_description_content_type="text/markdown",
     author='Iconfinder',
     author_email='support@iconfinder.com',
     url='https://www.iconfinder.com',
