@@ -339,7 +339,7 @@ class DeVatRules(EuVatRulesMixin):
     def get_vat_rate(self, item_type):
         if item_type == ItemType.ebook:
             return Decimal(7)
-        return Decimal(16)
+        return Decimal(19)
 
 
 # VAT rates are based on the report from January 1st, 2020
