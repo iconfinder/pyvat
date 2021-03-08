@@ -4,20 +4,20 @@ notifications:
 
 matrix:
   include:
-    - python: 2.7
-      dist: xenial
-    - python: 3.3
-      dist: trusty
-    - python: 3.4
-      dist: xenial
+#    - python: 2.7
+#      dist: xenial
+#    - python: 3.3
+#      dist: trusty
+#    - python: 3.4
+#      dist: xenial
     - python: 3.5
-      dist: xenial
+      dist: focal
     - python: 3.6
-      dist: xenial
+      dist: focal
     - python: 3.7
-      dist: xenial
+      dist: focal
     - python: 3.8
-      dist: xenial
+      dist: focal
 
 install: "pip install -r dev-requirements.txt"
 script: make test
