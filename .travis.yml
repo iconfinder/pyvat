@@ -2,8 +2,12 @@ language: python
 notifications:
   email: false
 python:
+  - "2.7"
+  - "3.3"
+  - "3.4"
   - "3.5"
   - "3.6"
   - "3.7"
+  - "3.8"
 install: "pip install -r dev-requirements.txt"
 script: make test
