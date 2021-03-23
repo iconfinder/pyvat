@@ -24,13 +24,7 @@ class Registry(object):
 
         raise NotImplementedError()
 
-
-class ViesRegistry(Registry):
-    """VIES registry.
-
-    Uses the European Commision's VIES registry for validating VAT numbers.
-    """
-
+class BaseViesRegistry(Registry):
     CHECK_VAT_SERVICE_URL = 'http://ec.europa.eu/taxation_customs/vies/' \
         'services/checkVatService'
     """URL for the VAT checking service.
@@ -39,65 +33,20 @@ class ViesRegistry(Registry):
     DEFAULT_TIMEOUT = 8
     """Timeout for the requests."""
 
-    def check_vat_number(self, vat_number, country_code):
-        # Non-ISO code used for Greece.
-        if country_code == 'GR':
-            country_code = 'EL'
-
-        # Request information about the VAT number.
-        result = VatNumberCheckResult()
-
-        request_data = (
-                u'<?xml version="1.0" encoding="UTF-8"?><SOAP-ENV:Envelope'
-                u' xmlns:ns0="urn:ec.europa.eu:taxud:vies:services:checkVa'
-                u't:types" xmlns:ns1="http://schemas.xmlsoap.org/soap/enve'
-                u'lope/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-insta'
-                u'nce" xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/env'
-                u'elope/"><SOAP-ENV:Header/><ns1:Body><ns0:checkVat><ns0:c'
-                u'ountryCode>%s</ns0:countryCode><ns0:vatNumber>%s</ns0:va'
-                u'tNumber></ns0:checkVat></ns1:Body></SOAP-ENV:Envelope>' %
-                (country_code, vat_number)
+    def generate_request_data(self, vat_number, country_code):
+        return (
+            u'<?xml version="1.0" encoding="UTF-8"?><SOAP-ENV:Envelope'
+            u' xmlns:ns0="urn:ec.europa.eu:taxud:vies:services:checkVa'
+            u't:types" xmlns:ns1="http://schemas.xmlsoap.org/soap/enve'
+            u'lope/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-insta'
+            u'nce" xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/env'
+            u'elope/"><SOAP-ENV:Header/><ns1:Body><ns0:checkVat><ns0:c'
+            u'ountryCode>%s</ns0:countryCode><ns0:vatNumber>%s</ns0:va'
+            u'tNumber></ns0:checkVat></ns1:Body></SOAP-ENV:Envelope>' %
+            (country_code, vat_number)
         )
 
-        result.log_lines += [
-            u'> POST %s with payload of content type text/xml, charset UTF-8:',
-            request_data,
-        ]
-
-        try:
-            response = requests.post(
-                self.CHECK_VAT_SERVICE_URL,
-                data=request_data.encode('utf-8'),
-                headers={
-                    'Content-Type': 'text/xml; charset=utf-8',
-                },
-                timeout=self.DEFAULT_TIMEOUT
-            )
-        except Timeout as e:
-            result.log_lines.append(u'< Request to EU VIEW registry timed out:'
-                                    u' {}'.format(e))
-            return result
-        except Exception as exception:
-            # Do not completely fail problematic requests.
-            result.log_lines.append(u'< Request failed with exception: %r' %
-                                    (exception))
-            return result
-
-        # Log response information.
-        result.log_lines += [
-            u'< Response with status %d of content type %s:' %
-            (response.status_code, response.headers['Content-Type']),
-            response.text,
-            ]
-
-        # Do not completely fail problematic requests.
-        if response.status_code != 200 or \
-                not response.headers['Content-Type'].startswith('text/xml'):
-            result.log_lines.append(u'< Response is nondeterministic due to '
-                                    u'invalid response status code or MIME '
-                                    u'type')
-            return result
-
+    def parse_response_to_result(self, response_text, result):
         # Parse the DOM and validate as much as we can.
         #
         # We basically expect the result structure to be as follows,
@@ -115,7 +64,7 @@ class ViesRegistry(Registry):
         #     </checkVatResponse>
         #   </soap:Body>
         # </soap:Envelope>
-        result_dom = xml.dom.minidom.parseString(response.text.encode('utf-8'))
+        result_dom = xml.dom.minidom.parseString(response_text.encode('utf-8'))
 
         envelope_node = result_dom.documentElement
         if envelope_node.tagName != 'soap:Envelope':
@@ -179,5 +128,61 @@ class ViesRegistry(Registry):
 
         return result
 
+class ViesRegistry(BaseViesRegistry):
+    """VIES registry.
+
+    Uses the European Commision's VIES registry for validating VAT numbers.
+    """
+
+    def check_vat_number(self, vat_number, country_code):
+        # Non-ISO code used for Greece.
+        if country_code == 'GR':
+            country_code = 'EL'
+
+        # Request information about the VAT number.
+        result = VatNumberCheckResult()
+
+        request_data = self.generate_request_data(vat_number, country_code)
+
+        result.log_lines += [
+            u'> POST %s with payload of content type text/xml, charset UTF-8:',
+            request_data,
+        ]
+
+        try:
+            response = requests.post(
+                self.CHECK_VAT_SERVICE_URL,
+                data=request_data.encode('utf-8'),
+                headers={
+                    'Content-Type': 'text/xml; charset=utf-8',
+                },
+                timeout=self.DEFAULT_TIMEOUT
+            )
+        except Timeout as e:
+            result.log_lines.append(u'< Request to EU VIEW registry timed out:'
+                                    u' {}'.format(e))
+            return result
+        except Exception as exception:
+            # Do not completely fail problematic requests.
+            result.log_lines.append(u'< Request failed with exception: %r' %
+                                    (exception))
+            return result
+
+        # Log response information.
+        result.log_lines += [
+            u'< Response with status %d of content type %s:' %
+            (response.status_code, response.headers['Content-Type']),
+            response.text,
+            ]
+
+        # Do not completely fail problematic requests.
+        if response.status_code != 200 or \
+                not response.headers['Content-Type'].startswith('text/xml'):
+            result.log_lines.append(u'< Response is nondeterministic due to '
+                                    u'invalid response status code or MIME '
+                                    u'type')
+            return result
+
+        return self.parse_response_to_result(response.text, result)
 
 __all__ = ('Registry', 'ViesRegistry', )
