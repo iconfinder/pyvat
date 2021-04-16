@@ -1,9 +1,23 @@
 language: python
 notifications:
   email: false
-python:
-  - "3.5"
-  - "3.6"
-  - "3.7"
-install: "pip install -r dev-requirements.txt"
+
+matrix:
+  include:
+    - python: 2.7
+      dist: xenial
+#    - python: 3.3
+#      dist: trusty
+#    - python: 3.4
+#      dist: xenial
+#    - python: 3.5
+#      dist: focal
+#    - python: 3.6
+#      dist: focal
+#    - python: 3.7
+#      dist: focal
+    - python: 3.8
+      dist: focal
+
+install: "pip install .[tests]"
 script: make test

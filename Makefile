@@ -6,6 +6,7 @@ check:
 	@flake8 $(PY_SRC)
 
 docs:
+	pip install sphinx sphinx_rtd_theme
 	@make -C docs html
 
 publish:
