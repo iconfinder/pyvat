@@ -1,3 +1,5 @@
+# -*- coding: UTF-8 -*-
+
 from pyvat import (
     check_vat_number,
     is_vat_number_format_valid,
