@@ -129,8 +129,7 @@ VAT_NUMBER_CHECK_CASES = {
         ('0438390312',
          VatNumberCheckResult(
              True,
-             business_name=u'NV UNILEVER BELGIUM - UNILEVER BELGIQUE - '
-             u'UNILEVER BELGIE',
+             business_name=u'NV UNILEVER BELGIUM',
              business_address=u'Industrielaan 9\n1070 Anderlecht'
          )),
     ],
