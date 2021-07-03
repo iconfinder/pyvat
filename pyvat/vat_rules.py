@@ -360,7 +360,7 @@ VAT_RULES = {
     'FR': FrVatRules(),
     'HR': HrVatRules(25),
     'HU': ConstantEuVatRateRules(27),
-    'IE': IeVatRules(21),
+    'IE': IeVatRules(23),
     'IT': ConstantEuVatRateRules(22),
     'LT': ConstantEuVatRateRules(21),
     'LU': LuVatRules(),
