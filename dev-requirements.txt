@@ -7,3 +7,4 @@ sphinx
 sphinx_rtd_theme
 unittest2
 enum34
+aiohttp>=3.7.4
