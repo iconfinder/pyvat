@@ -4,8 +4,13 @@ try:
 except ImportError:
     from distutils.core import setup
 
+import re
+
 with open("README.rst", "r") as fh:
     long_description = fh.read()
+
+with open("pyvat/version.py", "r") as fp:
+    version = re.match("__version__ = '([0-9\.]+)'", fp.read()).group(1)
 
 packages = [
     'pyvat',
@@ -26,7 +31,7 @@ tests_require = [
 
 setup(
     name='pyvat',
-    version='1.3.15',
+    version=version,
     description='VAT validation for Python',
     long_description=long_description,
     long_description_content_type="text/x-rst",

@@ -6,9 +6,8 @@ from .registries import ViesRegistry
 from .result import VatNumberCheckResult
 from .vat_charge import VatCharge, VatChargeAction
 from .vat_rules import VAT_RULES
+from .version import __version__
 
-
-__version__ = '1.3.15'
 
 
 WHITESPACE_EXPRESSION = re.compile(r'[\s\-]+')
