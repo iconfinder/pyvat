@@ -103,31 +103,34 @@ class ViesRegistry(Registry):
         # We basically expect the result structure to be as follows,
         # where the address and name nodes might be omitted.
         #
-        # <soap:Envelope>
-        #   <soap:Body>
-        #     <checkVatResponse>
-        #       <countryCode>..</countryCode>
-        #       <vatNumber>..</vatNumber>
-        #       <requestDate>..</requestDate>
-        #       <valid>..</valid>
-        #       <name>..</name>
-        #       <address>..</address>
-        #     </checkVatResponse>
-        #   </soap:Body>
-        # </soap:Envelope>
+        # <env:Envelope
+	    #     xmlns:env="http://schemas.xmlsoap.org/soap/envelope/">
+        #         <env:Header/>
+        #         <env:Body>
+        #         <ns2:checkVatResponse
+        #              xmlns:ns2="urn:ec.europa.eu:taxud:vies:services:checkVat:types">
+        #              <ns2:countryCode>DE</ns2:countryCode>
+        #              <ns2:vatNumber>812383453</ns2:vatNumber>
+        #              <ns2:requestDate>2022-08-12+02:00</ns2:requestDate>
+        #              <ns2:valid>true</ns2:valid>
+        #              <ns2:name>---</ns2:name>
+        #              <ns2:address>---</ns2:address>
+        #         </ns2:checkVatResponse>
+        #     </env:Body>
+        # </env:Envelope>
         result_dom = xml.dom.minidom.parseString(response.text.encode('utf-8'))
 
         envelope_node = result_dom.documentElement
-        if envelope_node.tagName != 'soap:Envelope':
+        if envelope_node.tagName != 'env:Envelope':
             raise ValueError(
                 'expected response XML root element to be a SOAP envelope'
             )
 
-        body_node = get_first_child_element(envelope_node, 'soap:Body')
+        body_node = get_first_child_element(envelope_node, 'env:Body')
 
         # Check for server errors
         try:
-            error_node = get_first_child_element(body_node, 'soap:Fault')
+            error_node = get_first_child_element(body_node, 'env:Fault')
             fault_strings = error_node.getElementsByTagName('faultstring')
             fault_code = fault_strings[0].firstChild.nodeValue
             raise ServerError(fault_code)
@@ -137,11 +140,11 @@ class ViesRegistry(Registry):
         try:
             check_vat_response_node = get_first_child_element(
                 body_node,
-                'checkVatResponse'
+                'ns2:checkVatResponse'
             )
             valid_node = get_first_child_element(
                 check_vat_response_node,
-                'valid'
+                'ns2:valid'
             )
         except Exception as e:
             result.log_lines.append(u'< Response is nondeterministic due to '
@@ -162,7 +165,7 @@ class ViesRegistry(Registry):
         try:
             name_node = get_first_child_element(
                 check_vat_response_node,
-                'name'
+                'ns2:name'
             )
             result.business_name = get_text(name_node).strip() or None
         except Exception:
@@ -171,7 +174,7 @@ class ViesRegistry(Registry):
         try:
             address_node = get_first_child_element(
                 check_vat_response_node,
-                'address'
+                'ns2:address'
             )
             result.business_address = get_text(address_node).strip() or None
         except Exception:
