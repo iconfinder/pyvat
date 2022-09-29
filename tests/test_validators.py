@@ -5,7 +5,6 @@ from pyvat import (
 )
 from unittest2 import TestCase
 
-
 VAT_NUMBER_FORMAT_CASES = {
     '': [
         ('123456', False),
@@ -59,6 +58,11 @@ VAT_NUMBER_FORMAT_CASES = {
         ('I2345678901', False),
         ('1I345678901', False),
         ('II345678901', False),
+    ],
+    'GB': [
+        ('123456789', True),
+        ('123456789001', True),
+        ('999999999999999999999999999999999999', False),
     ],
     'GR': [
         ('012345678', True),
@@ -130,7 +134,7 @@ VAT_NUMBER_CHECK_CASES = {
          VatNumberCheckResult(
              True,
              business_name=u'NV UNILEVER BELGIUM - UNILEVER BELGIQUE - '
-             u'UNILEVER BELGIE',
+                           u'UNILEVER BELGIE',
              business_address=u'Industrielaan 9\n1070 Anderlecht'
          )),
     ],
@@ -263,4 +267,4 @@ class CheckVatNumberTestCase(TestCase):
                 )
 
 
-__all__ = ('IsVatNumberFormatValidTestCase', 'CheckVatNumberTestCase', )
+__all__ = ('IsVatNumberFormatValidTestCase', 'CheckVatNumberTestCase',)
