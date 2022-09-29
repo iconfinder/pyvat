@@ -148,6 +148,13 @@ VAT_NUMBER_CHECK_CASES = {
         ('9999999', VatNumberCheckResult(False)),
         ('999999900', VatNumberCheckResult(False)),
     ],
+    'GB': [
+        ('553557881', VatNumberCheckResult(
+            True,
+            business_name='Credite Sberger Donal Inc.',
+            business_address='131B Barton Hamlet, SW97 5CK, GB'
+        )),
+    ],
     'IE': [
         ('1114174HH',
          VatNumberCheckResult(
@@ -247,7 +254,7 @@ class CheckVatNumberTestCase(TestCase):
             for vat_number, expected in cases:
                 self.assert_result_equals(
                     expected,
-                    check_vat_number('%s%s' % (country_code, vat_number))
+                    check_vat_number('%s%s' % (country_code, vat_number,), test=True)
                 )
 
     def test_dk__country_code(self):
@@ -258,12 +265,12 @@ class CheckVatNumberTestCase(TestCase):
             for vat_number, expected in cases:
                 self.assert_result_equals(
                     expected,
-                    check_vat_number(vat_number, country_code)
+                    check_vat_number(vat_number, country_code, test=True)
                 )
                 self.assert_result_equals(
                     expected,
                     check_vat_number('%s%s' % (country_code, vat_number),
-                                     country_code)
+                                     country_code, test=True)
                 )
 
 
