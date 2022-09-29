@@ -10,6 +10,7 @@ Supported countries and registries
 As of the current version, ``pyvat`` has VAT number validation expressions for the following countries:
 
 .. _VIES FAQ Q11: http://ec.europa.eu/taxation_customs/vies/faqvies.do#item_11
+.. _HMRC: https://www.gov.uk/check-uk-vat-number
 
 ================== ===================== ======================================
 ISO 3166-1-alpha-2 Country               Reference
@@ -26,6 +27,7 @@ EL                 Greece                `VIES FAQ Q11`_
 ES                 Spain                 `VIES FAQ Q11`_
 FI                 Finland               `VIES FAQ Q11`_
 FR                 France                `VIES FAQ Q11`_
+GB                 United Kingdom        `HMRC`_
 HU                 Hungary               `VIES FAQ Q11`_
 HR                 Croatia               `VIES FAQ Q11`_
 IE                 Ireland               `VIES FAQ Q11`_
@@ -46,6 +48,7 @@ SK                 Slovakia              `VIES FAQ Q11`_
 The VAT numbers for the following countries can furthermore be validated against a registry:
 
 .. _VIES web service: http://ec.europa.eu/taxation_customs/vies/faqvies.do#item_16
+.. _HRMC API: https://developer.service.hmrc.gov.uk/api-documentation/docs/api/service/vat-registered-companies-api/1.0
 
 ================== ===================== ======================================
 ISO 3166-1-alpha-2 Country               Registry
@@ -62,6 +65,7 @@ EL                 Greece                `VIES web service`_
 ES                 Spain                 `VIES web service`_
 FI                 Finland               `VIES web service`_
 FR                 France                `VIES web service`_
+GB                 United Kingdom        `HRMC API`_
 HU                 Hungary               `VIES web service`_
 HR                 Croatia               `VIES web service`_
 IE                 Ireland               `VIES web service`_

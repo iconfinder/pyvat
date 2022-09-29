@@ -2,21 +2,18 @@ import re
 import pycountry
 from .item_type import ItemType
 from .party import Party
-from .registries import ViesRegistry
+from .registries import ViesRegistry, HMRCRegistry
 from .result import VatNumberCheckResult
 from .vat_charge import VatCharge, VatChargeAction
 from .vat_rules import VAT_RULES
 
-
 __version__ = '1.3.16'
-
 
 WHITESPACE_EXPRESSION = re.compile(r'[\s\-]+')
 """Whitespace expression.
 
 Used for cleaning VAT numbers.
 """
-
 
 VAT_NUMBER_EXPRESSIONS = {
     'AT': re.compile(r'^U\d{8}$', re.IGNORECASE),
@@ -30,6 +27,7 @@ VAT_NUMBER_EXPRESSIONS = {
     'ES': re.compile(r'^[\da-z]\d{7}[\da-z]$', re.IGNORECASE),
     'FI': re.compile(r'^\d{8}$'),
     'FR': re.compile(r'^[\da-hj-np-z]{2}\d{9}$', re.IGNORECASE),
+    'GB': re.compile(r'^((\d{9})|(\d{12})|(GD\d{3})|(HA\d{3}))$', re.IGNORECASE),
     'GR': re.compile(r'^\d{9}$'),
     'HR': re.compile(r'^\d{11}$'),
     'HU': re.compile(r'^\d{8}$'),
@@ -58,11 +56,10 @@ EU VAT number structures are retrieved from `VIES
 <http://ec.europa.eu/taxation_customs/vies/faqvies.do>`_.
 """
 
-
 VIES_REGISTRY = ViesRegistry()
+HMRC_REGISTRY = HMRCRegistry()
 """VIES registry instance.
 """
-
 
 VAT_REGISTRIES = {
     'AT': VIES_REGISTRY,
@@ -76,6 +73,7 @@ VAT_REGISTRIES = {
     'ES': VIES_REGISTRY,
     'FI': VIES_REGISTRY,
     'FR': VIES_REGISTRY,
+    'GB': HMRC_REGISTRY,
     'GR': VIES_REGISTRY,
     'HU': VIES_REGISTRY,
     'HR': VIES_REGISTRY,
@@ -235,8 +233,8 @@ def get_sale_vat_charge(date,
     # Only telecommunications, broadcasting and electronic services are
     # currently supported.
     if not item_type.is_electronic_service and \
-       not item_type.is_telecommunications_service and \
-       not item_type.is_broadcasting_service:
+            not item_type.is_telecommunications_service and \
+            not item_type.is_broadcasting_service:
         raise NotImplementedError(
             'VAT charge determination for items that are not '
             'telecommunications, broadcasting or electronic services is '

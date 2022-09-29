@@ -10,7 +10,6 @@ from pyvat import (
 from pyvat.countries import EU_COUNTRY_CODES
 from unittest2 import TestCase
 
-
 EXPECTED_VAT_RATES = {
     'AT': {
         ItemType.generic_physical_good: Decimal(20),
@@ -120,14 +119,23 @@ EXPECTED_VAT_RATES = {
         ItemType.ebook: Decimal(24),
         ItemType.enewspaper: Decimal(24),
     },
+    'GB': {
+        ItemType.generic_physical_good: Decimal(20),
+        ItemType.generic_electronic_service: Decimal(20),
+        ItemType.generic_telecommunications_service: Decimal(20),
+        ItemType.generic_broadcasting_service: Decimal(20),
+        ItemType.prepaid_broadcasting_service: Decimal(20),
+        ItemType.ebook: Decimal(0),
+        ItemType.enewspaper: Decimal(20),
+    },
     'GR': {  # Synonymous for "EL" -- Greece
-        ItemType.generic_physical_good:              Decimal(24),
-        ItemType.generic_electronic_service:         Decimal(24),
+        ItemType.generic_physical_good: Decimal(24),
+        ItemType.generic_electronic_service: Decimal(24),
         ItemType.generic_telecommunications_service: Decimal(24),
-        ItemType.generic_broadcasting_service:       Decimal(24),
-        ItemType.prepaid_broadcasting_service:       Decimal(24),
-        ItemType.ebook:                              Decimal(24),
-        ItemType.enewspaper:                         Decimal(24),
+        ItemType.generic_broadcasting_service: Decimal(24),
+        ItemType.prepaid_broadcasting_service: Decimal(24),
+        ItemType.ebook: Decimal(24),
+        ItemType.enewspaper: Decimal(24),
     },
     'HR': {
         ItemType.generic_physical_good: Decimal(25),
