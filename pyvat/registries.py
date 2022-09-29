@@ -14,11 +14,12 @@ class Registry(object):
     Defines an explicit interface for accessing arbitary registries.
     """
 
-    def check_vat_number(self, vat_number, country_code):
+    def check_vat_number(self, vat_number, country_code, test):
         """Check if a VAT number is valid according to the registry.
 
         :param vat_number: VAT number without country code prefix.
         :param country_code: ISO 3166-1-alpha-2 country code.
+        :param test: Boolean to identify if test or not.
         :returns: a :class:`VatNumberCheckResult` instance.
         """
 
@@ -39,7 +40,7 @@ class ViesRegistry(Registry):
     DEFAULT_TIMEOUT = 8
     """Timeout for the requests."""
 
-    def check_vat_number(self, vat_number, country_code):
+    def check_vat_number(self, vat_number, country_code, test):
         # Non-ISO code used for Greece.
         if country_code == 'GR':
             country_code = 'EL'
@@ -184,26 +185,31 @@ class ViesRegistry(Registry):
 
 
 class HMRCRegistry(Registry):
-    """VIES registry.
+    """HMRC registry.
 
-    Uses the European Commision's VIES registry for validating VAT numbers.
+    Uses the HMRC API for validating VAT numbers.
     """
 
     CHECK_VAT_SERVICE_URL = 'https://api.service.hmrc.gov.uk/organisations/' \
                             'vat/check-vat-number/lookup/'
+    CHECK_VAT_SERVICE_TEST_URL = 'https://test-api.service.hmrc.gov.uk/organisations/' \
+                                 'vat/check-vat-number/lookup/'
     """URL for the VAT checking service.
     """
 
     DEFAULT_TIMEOUT = 8
     """Timeout for the requests."""
 
-    def check_vat_number(self, vat_number, country_code):
+    def check_vat_number(self, vat_number, country_code, test):
         # Request information about the VAT number.
         result = VatNumberCheckResult()
         result.is_valid = False
         try:
+            url = self.CHECK_VAT_SERVICE_URL
+            if test:
+                url = self.CHECK_VAT_SERVICE_TEST_URL
             response = requests.get(
-                self.CHECK_VAT_SERVICE_URL + vat_number,
+                url + vat_number,
                 timeout=self.DEFAULT_TIMEOUT
             )
         except Timeout as e:
