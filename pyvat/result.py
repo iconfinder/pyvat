@@ -15,8 +15,10 @@ class VatNumberCheckResult(object):
                  is_valid=None,
                  log_lines=None,
                  business_name=None,
-                 business_address=None):
+                 business_address=None,
+                 business_country_code=None):
         self.is_valid = is_valid
         self.log_lines = log_lines or []
         self.business_name = business_name
         self.business_address = business_address
+        self.business_country_code = business_country_code
