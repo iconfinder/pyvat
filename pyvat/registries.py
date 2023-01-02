@@ -14,11 +14,12 @@ class Registry(object):
     Defines an explicit interface for accessing arbitary registries.
     """
 
-    def check_vat_number(self, vat_number, country_code):
+    def check_vat_number(self, vat_number, country_code, test):
         """Check if a VAT number is valid according to the registry.
 
         :param vat_number: VAT number without country code prefix.
         :param country_code: ISO 3166-1-alpha-2 country code.
+        :param test: Boolean to identify if test or not.
         :returns: a :class:`VatNumberCheckResult` instance.
         """
 
@@ -32,14 +33,14 @@ class ViesRegistry(Registry):
     """
 
     CHECK_VAT_SERVICE_URL = 'http://ec.europa.eu/taxation_customs/vies/' \
-        'services/checkVatService'
+                            'services/checkVatService'
     """URL for the VAT checking service.
     """
 
     DEFAULT_TIMEOUT = 8
     """Timeout for the requests."""
 
-    def check_vat_number(self, vat_number, country_code):
+    def check_vat_number(self, vat_number, country_code, test):
         # Non-ISO code used for Greece.
         if country_code == 'GR':
             country_code = 'EL'
@@ -88,7 +89,7 @@ class ViesRegistry(Registry):
             u'< Response with status %d of content type %s:' %
             (response.status_code, response.headers['Content-Type']),
             response.text,
-            ]
+        ]
 
         # Do not completely fail problematic requests.
         if response.status_code != 200 or \
@@ -104,7 +105,7 @@ class ViesRegistry(Registry):
         # where the address and name nodes might be omitted.
         #
         # <env:Envelope
-	    #     xmlns:env="http://schemas.xmlsoap.org/soap/envelope/">
+        #     xmlns:env="http://schemas.xmlsoap.org/soap/envelope/">
         #         <env:Header/>
         #         <env:Body>
         #         <ns2:checkVatResponse
@@ -193,4 +194,87 @@ class ViesRegistry(Registry):
         return result
 
 
-__all__ = ('Registry', 'ViesRegistry', )
+class HMRCRegistry(Registry):
+    """HMRC registry.
+
+    Uses the HMRC API for validating VAT numbers.
+    """
+
+    CHECK_VAT_SERVICE_URL = 'https://api.service.hmrc.gov.uk/organisations/' \
+                            'vat/check-vat-number/lookup/'
+    CHECK_VAT_SERVICE_TEST_URL = 'https://test-api.service.hmrc.gov.uk/organisations/' \
+                                 'vat/check-vat-number/lookup/'
+    """URL for the VAT checking service.
+    """
+
+    DEFAULT_TIMEOUT = 8
+    """Timeout for the requests."""
+
+    def check_vat_number(self, vat_number, country_code, test):
+        # Request information about the VAT number.
+        result = VatNumberCheckResult()
+        result.is_valid = False
+        try:
+            url = self.CHECK_VAT_SERVICE_URL
+            if test:
+                url = self.CHECK_VAT_SERVICE_TEST_URL
+            response = requests.get(
+                url + vat_number,
+                timeout=self.DEFAULT_TIMEOUT
+            )
+        except Timeout as e:
+            result.log_lines.append(u'< Request to HMRC registry timed out:'
+                                    u' {}'.format(e))
+            return result
+        except Exception as exception:
+            # Do not completely fail problematic requests.
+            result.log_lines.append(u'< Request failed with exception: %r' %
+                                    (exception))
+            return result
+
+        # Log response information.
+        result.log_lines += [
+            u'< Response with status %d of content type %s:' %
+            (response.status_code, response.headers['Content-Type']),
+            response.text,
+        ]
+
+        # Do not completely fail problematic requests.
+        if response.status_code != 200 or \
+                not response.headers['Content-Type'].startswith('application/json'):
+            result.log_lines.append(u'< Response is nondeterministic due to '
+                                    u'invalid response status code or MIME '
+                                    u'type')
+            return result
+
+        # Parse the DOM and validate as much as we can.
+        #
+        # We basically expect the result structure to be as follows,
+        # where the address and name nodes might be omitted.
+        #
+        # {
+        #     "target": {
+        #         "name": "Credite Sberger Donal Inc.",
+        #         "vatNumber": "553557881",
+        #         "address": {
+        #             "line1": "131B Barton Hamlet",
+        #             "postcode": "SW97 5CK",
+        #             "countryCode": "GB"
+        #         }
+        #     },
+        #     "processingDate": "2022-09-29T12:08:48+01:00"
+        # }
+
+        json_response = response.json()
+        target = json_response.get('target', None)
+        if target:
+            result.is_valid = True
+            result.business_name = target.get('name', None)
+            address = target.get('address', {})
+            if address:
+                business_address = ', '.join(list(address.values()))
+                result.business_address = business_address
+        return result
+
+
+__all__ = ('Registry', 'ViesRegistry', 'HMRCRegistry', )

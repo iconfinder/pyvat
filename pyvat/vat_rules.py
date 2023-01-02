@@ -243,6 +243,14 @@ class MtVatRules(ConstantEuVatRateRules):
         return super(MtVatRules, self).get_vat_rate(item_type)
 
 
+class GbVatRules(ConstantEuVatRateRules):
+    """VAT rules for United Kingdom.
+    """
+
+    def get_vat_rate(self, item_type):
+        return super(GbVatRules, self).get_vat_rate(item_type)
+
+
 class SeVatRules(ConstantEuVatRateRules):
     """VAT rules for Sweden.
     """
@@ -358,6 +366,7 @@ VAT_RULES = {
     'ES': EsVatRules(),
     'FI': FiVatRules(24),
     'FR': FrVatRules(),
+    'GB': GbVatRules(20),
     'HR': HrVatRules(25),
     'HU': ConstantEuVatRateRules(27),
     'IE': IeVatRules(23),

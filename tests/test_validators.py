@@ -5,7 +5,6 @@ from pyvat import (
 )
 from unittest2 import TestCase
 
-
 VAT_NUMBER_FORMAT_CASES = {
     '': [
         ('123456', False),
@@ -59,6 +58,11 @@ VAT_NUMBER_FORMAT_CASES = {
         ('I2345678901', False),
         ('1I345678901', False),
         ('II345678901', False),
+    ],
+    'GB': [
+        ('123456789', True),
+        ('123456789001', True),
+        ('999999999999999999999999999999999999', False),
     ],
     'GR': [
         ('012345678', True),
@@ -130,7 +134,7 @@ VAT_NUMBER_CHECK_CASES = {
          VatNumberCheckResult(
              True,
              business_name=u'NV UNILEVER BELGIUM - UNILEVER BELGIQUE - '
-             u'UNILEVER BELGIE',
+                           u'UNILEVER BELGIE',
              business_address=u'Industrielaan 9\n1070 Anderlecht'
          )),
     ],
@@ -143,6 +147,13 @@ VAT_NUMBER_CHECK_CASES = {
         ('99999O99', VatNumberCheckResult(False)),
         ('9999999', VatNumberCheckResult(False)),
         ('999999900', VatNumberCheckResult(False)),
+    ],
+    'GB': [
+        ('553557881', VatNumberCheckResult(
+            True,
+            business_name='Credite Sberger Donal Inc.',
+            business_address='131B Barton Hamlet, SW97 5CK, GB'
+        )),
     ],
     'IE': [
         ('1114174HH',
@@ -243,7 +254,7 @@ class CheckVatNumberTestCase(TestCase):
             for vat_number, expected in cases:
                 self.assert_result_equals(
                     expected,
-                    check_vat_number('%s%s' % (country_code, vat_number))
+                    check_vat_number('%s%s' % (country_code, vat_number,), test=True)
                 )
 
     def test_dk__country_code(self):
@@ -254,13 +265,13 @@ class CheckVatNumberTestCase(TestCase):
             for vat_number, expected in cases:
                 self.assert_result_equals(
                     expected,
-                    check_vat_number(vat_number, country_code)
+                    check_vat_number(vat_number, country_code, test=True)
                 )
                 self.assert_result_equals(
                     expected,
                     check_vat_number('%s%s' % (country_code, vat_number),
-                                     country_code)
+                                     country_code, test=True)
                 )
 
 
-__all__ = ('IsVatNumberFormatValidTestCase', 'CheckVatNumberTestCase', )
+__all__ = ('IsVatNumberFormatValidTestCase', 'CheckVatNumberTestCase',)
