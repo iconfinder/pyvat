@@ -360,7 +360,7 @@ VAT_RULES = {
     'CZ': CzVatRules(21),
     'DE': DeVatRules(),
     'DK': ConstantEuVatRateRules(25),
-    'EE': ConstantEuVatRateRules(20),
+    'EE': ConstantEuVatRateRules(22),
     'EL': ElVatRules(),
     'GR': ElVatRules(),  # Synonymous country code for Greece
     'ES': EsVatRules(),
