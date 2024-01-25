@@ -7,6 +7,7 @@ from .result import VatNumberCheckResult
 from .vat_charge import VatCharge, VatChargeAction
 from .vat_rules import VAT_RULES
 
+
 __version__ = '1.3.18'
 
 
