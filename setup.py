@@ -26,7 +26,7 @@ tests_require = [
 
 setup(
     name='pyvat',
-    version='1.3.17',
+    version='1.3.18',
     description='VAT validation for Python',
     long_description=long_description,
     long_description_content_type="text/x-rst",
