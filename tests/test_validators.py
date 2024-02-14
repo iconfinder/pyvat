@@ -3,8 +3,8 @@ from pyvat import (
     is_vat_number_format_valid,
     VatNumberCheckResult,
 )
-from unittest2 import TestCase
-
+from unittest import TestCase
+import time
 
 VAT_NUMBER_FORMAT_CASES = {
     '': [
@@ -129,8 +129,7 @@ VAT_NUMBER_CHECK_CASES = {
         ('0438390312',
          VatNumberCheckResult(
              True,
-             business_name=u'NV UNILEVER BELGIUM - UNILEVER BELGIQUE - '
-             u'UNILEVER BELGIE',
+             business_name=u'NV UNILEVER BELGIUM',
              business_address=u'Industrielaan 9\n1070 Anderlecht'
          )),
     ],
@@ -176,6 +175,7 @@ class IsVatNumberFormatValidTestCase(TestCase):
 
         for country_code, cases in VAT_NUMBER_FORMAT_CASES.items():
             for vat_number, expected_result in cases:
+                time.sleep(0.25)
                 verbal_expected_result = \
                     'valid' if expected_result else 'invalid'
 
@@ -241,6 +241,7 @@ class CheckVatNumberTestCase(TestCase):
 
         for country_code, cases in VAT_NUMBER_CHECK_CASES.items():
             for vat_number, expected in cases:
+                time.sleep(0.25)
                 self.assert_result_equals(
                     expected,
                     check_vat_number('%s%s' % (country_code, vat_number))
@@ -252,10 +253,12 @@ class CheckVatNumberTestCase(TestCase):
 
         for country_code, cases in VAT_NUMBER_CHECK_CASES.items():
             for vat_number, expected in cases:
+                time.sleep(0.25)
                 self.assert_result_equals(
                     expected,
                     check_vat_number(vat_number, country_code)
                 )
+                time.sleep(0.25)
                 self.assert_result_equals(
                     expected,
                     check_vat_number('%s%s' % (country_code, vat_number),

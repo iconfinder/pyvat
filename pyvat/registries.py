@@ -48,15 +48,15 @@ class ViesRegistry(Registry):
         result = VatNumberCheckResult()
 
         request_data = (
-                u'<?xml version="1.0" encoding="UTF-8"?><SOAP-ENV:Envelope'
-                u' xmlns:ns0="urn:ec.europa.eu:taxud:vies:services:checkVa'
-                u't:types" xmlns:ns1="http://schemas.xmlsoap.org/soap/enve'
-                u'lope/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-insta'
-                u'nce" xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/env'
-                u'elope/"><SOAP-ENV:Header/><ns1:Body><ns0:checkVat><ns0:c'
-                u'ountryCode>%s</ns0:countryCode><ns0:vatNumber>%s</ns0:va'
-                u'tNumber></ns0:checkVat></ns1:Body></SOAP-ENV:Envelope>' %
-                (country_code, vat_number)
+            u'<?xml version="1.0" encoding="UTF-8"?><SOAP-ENV:Envelope'
+            u' xmlns:ns0="urn:ec.europa.eu:taxud:vies:services:checkVa'
+            u't:types" xmlns:ns1="http://schemas.xmlsoap.org/soap/enve'
+            u'lope/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-insta'
+            u'nce" xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/env'
+            u'elope/"><SOAP-ENV:Header/><ns1:Body><ns0:checkVat><ns0:c'
+            u'ountryCode>%s</ns0:countryCode><ns0:vatNumber>%s</ns0:va'
+            u'tNumber></ns0:checkVat></ns1:Body></SOAP-ENV:Envelope>' %
+            (country_code, vat_number)
         )
 
         result.log_lines += [
@@ -88,7 +88,7 @@ class ViesRegistry(Registry):
             u'< Response with status %d of content type %s:' %
             (response.status_code, response.headers['Content-Type']),
             response.text,
-            ]
+        ]
 
         # Do not completely fail problematic requests.
         if response.status_code != 200 or \
