@@ -356,7 +356,7 @@ VAT_RULES = {
     'EL': ElVatRules(),
     'GR': ElVatRules(),  # Synonymous country code for Greece
     'ES': EsVatRules(),
-    'FI': FiVatRules(24),
+    'FI': FiVatRules(25.5),
     'FR': FrVatRules(),
     'HR': HrVatRules(25),
     'HU': ConstantEuVatRateRules(27),
