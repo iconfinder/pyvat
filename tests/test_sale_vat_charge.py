@@ -8,7 +8,7 @@ from pyvat import (
     VatChargeAction,
 )
 from pyvat.countries import EU_COUNTRY_CODES
-from unittest2 import TestCase
+from unittest import TestCase
 
 
 EXPECTED_VAT_RATES = {
@@ -148,13 +148,13 @@ EXPECTED_VAT_RATES = {
         ItemType.enewspaper: Decimal(27),
     },
     'IE': {
-        ItemType.generic_physical_good: Decimal(21),
-        ItemType.generic_electronic_service: Decimal(21),
-        ItemType.generic_telecommunications_service: Decimal(21),
-        ItemType.generic_broadcasting_service: Decimal(21),
-        ItemType.prepaid_broadcasting_service: Decimal(21),
+        ItemType.generic_physical_good: Decimal(23),
+        ItemType.generic_electronic_service: Decimal(23),
+        ItemType.generic_telecommunications_service: Decimal(23),
+        ItemType.generic_broadcasting_service: Decimal(23),
+        ItemType.prepaid_broadcasting_service: Decimal(23),
         ItemType.ebook: Decimal(9),
-        ItemType.enewspaper: Decimal(21),
+        ItemType.enewspaper: Decimal(23),
     },
     'IT': {
         ItemType.generic_physical_good: Decimal(22),
@@ -301,7 +301,7 @@ class GetSaleVatChargeTestCase(TestCase):
                                          VatChargeAction.charge)
 
                         self.assertEqual(vat_charge.rate,
-                                         EXPECTED_VAT_RATES[seller_cc][it])
+                                         EXPECTED_VAT_RATES[seller_cc][it], "wrong rate: {}/{}".format(it, seller_cc), )
                         self.assertEqual(vat_charge.country_code,
                                          seller_cc)
 
