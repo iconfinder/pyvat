@@ -59,8 +59,11 @@ EU VAT number structures are retrieved from `VIES
 """
 
 VIES_REGISTRY = ViesRegistry()
-HMRC_REGISTRY = HMRCRegistry()
 """VIES registry instance.
+"""
+
+HMRC_REGISTRY = HMRCRegistry()
+"""HMRC registry instance.
 """
 
 VAT_REGISTRIES = {
