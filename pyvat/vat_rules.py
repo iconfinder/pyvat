@@ -380,7 +380,7 @@ VAT_RULES = {
     'PT': PtVatRules(23),
     'RO': ConstantEuVatRateRules(19),
     'SE': SeVatRules(25),
-    'SK': ConstantEuVatRateRules(20),
+    'SK': ConstantEuVatRateRules(23),
     'SI': ConstantEuVatRateRules(22),
 }
 
