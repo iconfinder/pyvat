@@ -1,8 +1,8 @@
 flake8
+iso3166
 nose
 rednose
 requests
-pycountry
 sphinx
 sphinx_rtd_theme
 unittest2

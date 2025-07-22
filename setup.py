@@ -13,7 +13,7 @@ packages = [
 
 requires = [
     'requests>=1.0.0,<3.0',
-    'pycountry',
+    'iso3166',
     'enum34; python_version < "3.4"',
 ]
 

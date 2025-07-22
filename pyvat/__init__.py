@@ -1,5 +1,5 @@
 import re
-import pycountry
+import iso3166
 from .item_type import ItemType
 from .party import Party
 from .registries import ViesRegistry, HMRCRegistry
@@ -132,8 +132,7 @@ def decompose_vat_number(vat_number, country_code=None):
 
         if country_code not in VAT_REGISTRIES:
             try:
-                if not pycountry.countries.get(alpha_2=country_code):
-                    return (vat_number, None)
+                iso3166.countries_by_alpha2[country_code]
             except KeyError:
                 # country code not found
                 return (vat_number, None)

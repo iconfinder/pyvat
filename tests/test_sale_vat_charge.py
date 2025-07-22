@@ -1,5 +1,5 @@
 import datetime
-import pycountry
+import iso3166
 from decimal import Decimal
 from pyvat import (
     get_sale_vat_charge,
@@ -369,8 +369,8 @@ class GetSaleVatChargeTestCase(TestCase):
 
         # EU businesses selling to customers outside the EU do not charge VAT.
         for seller_cc in EU_COUNTRY_CODES:
-            for buyer_country in pycountry.countries:
-                buyer_cc = buyer_country.alpha_2
+            for buyer_country in iso3166.countries:
+                buyer_cc = buyer_country.alpha2
                 if buyer_cc in EU_COUNTRY_CODES:
                     continue
 
