@@ -214,6 +214,55 @@ def check_vat_number(vat_number, country_code=None, test=False):
     return VAT_REGISTRIES[country_code].check_vat_number(vat_number,
                                                          country_code, test)
 
+def check_vat_number_with_request_identifier(vat_number, requester_country_code, requester_vat_number, country_code=None):
+    """
+    Check if a VAT number is valid using a registry that supports request identification.
+
+    This function validates the given VAT number, taking into account the requester's information (requester_country_code and requester_vat_number)
+    as required by certain national authorities for proper auditing and evidence. When called, the function will attempt to verify the VAT number
+    and will return a VatNumberCheckResult instance containing the result of the validation. The result object also contains a 'request_identifier'
+    (request_identifier), which serves as a unique proof of the verification that can be stored and presented to authorities should a selling company
+    undergo an audit.
+
+    :param vat_number: VAT number to validate.
+    :param requester_country_code: Country code of the requesting party (e.g., your own company).
+    :param requester_vat_number: VAT number of the requesting party (e.g., your own company VAT number).
+    :param country_code:
+        Optional country code. Should be supplied if known, as there is no
+        guarantee that naively entered VAT numbers contain the correct alpha-2
+        country code prefix for EU countries just as not all non-EU countries
+        have a reliable country code prefix. Default ``None`` prompting
+        detection.
+    :returns:
+        a :class:`VatNumberCheckResult` instance containing the result for the
+        full VAT number check. The result includes a 'request_identifier' that can be retained
+        for compliance and audit purposes with relevant authorities.
+    """
+
+    # Decompose the VAT number.
+    vat_number, country_code = decompose_vat_number(vat_number, country_code)
+    if not vat_number or not country_code:
+        return VatNumberCheckResult(False, [
+            '> Unable to decompose VAT number, resulted in %r and %r' %
+            (vat_number, country_code)
+        ])
+
+    # Test the VAT number format.
+    format_result = is_vat_number_format_valid(vat_number, country_code)
+    if format_result is not True:
+        return VatNumberCheckResult(format_result, [
+            '> VAT number validation failed: %r' % (format_result)
+        ])
+
+    # Attempt to check the VAT number against a registry.
+    if country_code not in VAT_REGISTRIES:
+        return VatNumberCheckResult()
+
+    return VAT_REGISTRIES[country_code].check_vat_number_with_request_identifier(vat_number,
+                                                        requester_country_code,
+                                                        requester_vat_number,
+                                                        country_code
+                                                        )
 
 def get_sale_vat_charge(date,
                         item_type,
