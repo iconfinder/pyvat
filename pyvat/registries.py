@@ -295,6 +295,13 @@ class HMRCRegistry(Registry):
             response.text,
         ]
 
+        # A 404 from HMRC means the VAT number was not found in the
+        # registry. This is a deterministic negative result, not a
+        # service outage, so it must not be treated as nondeterministic.
+        if response.status_code == 404:
+            result.log_lines.append(u'< VAT number not found (404 NOT_FOUND)')
+            return result
+
         # Do not completely fail problematic requests.
         if response.status_code != 200 or \
                 not response.headers['Content-Type'].startswith('application/json'):
